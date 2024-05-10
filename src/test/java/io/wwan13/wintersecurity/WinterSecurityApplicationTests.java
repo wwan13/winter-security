@@ -1,13 +1,10 @@
 package io.wwan13.wintersecurity;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class WinterSecurityApplicationTests {
+class WinterSecurityApplicationTests extends ContextTest {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
