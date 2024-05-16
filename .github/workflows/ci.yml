@@ -16,5 +16,6 @@ jobs:
           python-version: "3.10"
           cache: 'pip'
       - run: |
+          pip cache dir
           python3 ./.github/workflows/scripts/check-lisence.py
           
