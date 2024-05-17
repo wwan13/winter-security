@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package io.wwan13.wintersecurity;
 
 import org.springframework.boot.SpringApplication;
