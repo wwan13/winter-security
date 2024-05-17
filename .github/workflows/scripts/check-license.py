@@ -1,6 +1,6 @@
 import os
 
-base_path = "./src/main/java/io/wwan13/wintersecurity/"
+base_path = "./src/"
 
 all_java_file_paths = list()
 
