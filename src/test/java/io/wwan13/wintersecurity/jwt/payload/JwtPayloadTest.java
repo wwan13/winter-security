@@ -180,7 +180,7 @@ class JwtPayloadTest extends UnitTest {
     }
 
     @Test
-    void should_ConvertToStringMap_when_BothDataTypeAndWrapperClassClaims() {
+    void should_ConvertToObjectMap_when_BothDataTypeAndWrapperClassClaims() {
         // given
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
@@ -190,16 +190,19 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithDataTypeAndWrapperClassClaims(subject, roles, dataTypeClaim, wrapperClassClaim);
 
         // when
-        Map<String, String> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payload.asAdditionalClaims();
 
         // then
         result.keySet().forEach(key ->
-                assertThat(result.get(key)).isEqualTo("1")
+                assertThat(result.get(key))
+                        .isEqualTo(1L)
+                        .isInstanceOf(Object.class)
+
         );
     }
 
     @Test
-    void should_ConvertToStringMap_when_BothAnnotationIsExistAndNotExist() {
+    void should_ConvertToObjectMap_when_BothAnnotationIsExistAndNotExist() {
         // given
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
@@ -208,7 +211,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         // when
-        Map<String, String> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payload.asAdditionalClaims();
 
         // then
         assertThat(result.keySet().size()).isEqualTo(2);
@@ -224,7 +227,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         // when
-        Map<String, String> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payload.asAdditionalClaims();
 
         // then
         assertThat(result.keySet()).contains("annotated", "notAnnotated");
@@ -240,7 +243,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithValueEnteredClaim(subject, roles, claim);
 
         // when
-        Map<String, String> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payload.asAdditionalClaims();
 
         // then
         assertThat(result.keySet()).contains("entered");

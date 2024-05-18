@@ -70,12 +70,12 @@ public abstract class JwtPayload implements Payload {
     }
 
     @Override
-    public Map<String, String> asAdditionalClaims() {
-        Map<String, String> additionalClaims = new HashMap<>();
+    public Map<String, Object> asAdditionalClaims() {
+        Map<String, Object> additionalClaims = new HashMap<>();
 
         findAdditionalClaims().forEach(field -> {
             String key = getClaimKey(field);
-            String value = Objects.toString(getFieldValue(field));
+            Object value = getFieldValue(field);
             additionalClaims.put(key, value);
         });
 

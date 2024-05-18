@@ -24,7 +24,7 @@ import java.util.Set;
 public interface Payload {
     String asSubject();
     Set<String> asRoles();
-    Map<String, String> asAdditionalClaims();
+    Map<String, Object> asAdditionalClaims();
 
     static DefaultPayload of(Object subject, Set<Object> roles) {
         return new DefaultPayload(subject, roles);
