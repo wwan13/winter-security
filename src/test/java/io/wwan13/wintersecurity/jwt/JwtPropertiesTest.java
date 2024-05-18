@@ -33,7 +33,7 @@ class JwtPropertiesTest extends UnitTest {
         final String secretKey = "secretkey123123123123123123123123123123123123123123123123";
         final long accessTokenValidity = 1000L;
         final long refreshTokenValidity = 1000L;
-        final Class<?> payloadClass = DefaultPayload.class;
+        final Class<? extends Payload> payloadClass = DefaultPayload.class;
         final Class<?> subjectClass = long.class;
         final Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 

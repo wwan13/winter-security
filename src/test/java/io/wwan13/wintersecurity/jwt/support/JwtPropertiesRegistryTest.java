@@ -19,6 +19,7 @@ package io.wwan13.wintersecurity.jwt.support;
 import io.jsonwebtoken.security.Keys;
 import io.wwan13.wintersecurity.constant.Constants;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
+import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +37,7 @@ class JwtPropertiesRegistryTest {
         final String secretKey = "secretkey123123123123123123123123123123123123123123123123";
         final long accessTokenValidity = 1000L;
         final long refreshTokenValidity = 1000L;
-        final Class<?> payloadClass = DefaultPayload.class;
+        final Class<? extends Payload> payloadClass = DefaultPayload.class;
         final Class<?> subjectClass = long.class;
 
         // when
