@@ -18,6 +18,9 @@ package io.wwan13.wintersecurity.jwt.support;
 
 import io.jsonwebtoken.security.Keys;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
+import io.wwan13.wintersecurity.jwt.Payload;
+
+import java.util.Objects;
 
 import static io.wwan13.wintersecurity.constant.Constants.*;
 
@@ -26,7 +29,7 @@ public class JwtPropertiesRegistry {
     private String secretKey;
     private long accessTokenValidity;
     private long refreshTokenValidity;
-    private Class<?> payloadClazz;
+    private Class<? extends Payload> payloadClazz;
     private Class<?> subjectClazz;
 
     public JwtPropertiesRegistry secretKey(String secretKey) {
@@ -44,7 +47,7 @@ public class JwtPropertiesRegistry {
         return this;
     }
 
-    public JwtPropertiesRegistry payloadClazz(Class<?> payloadClazz) {
+    public JwtPropertiesRegistry payloadClazz(Class<? extends  Payload> payloadClazz) {
         this.payloadClazz = payloadClazz;
         return this;
     }
@@ -58,10 +61,10 @@ public class JwtPropertiesRegistry {
         validateSecretKey();
         return new JwtProperties(
                 secretKey,
-                existOrDefault(accessTokenValidity, DEFAULT_ACCESS_TOKEN_VALIDITY),
-                existOrDefault(refreshTokenValidity, DEFAULT_REFRESH_TOKEN_VALIDITY),
-                existOrDefault(payloadClazz, DEFAULT_PAYLOAD_CLAZZ),
-                existOrDefault(subjectClazz, DEFAULT_SUBJECT_CLAZZ),
+                existOrDefaultValidity(accessTokenValidity, DEFAULT_ACCESS_TOKEN_VALIDITY),
+                existOrDefaultValidity(refreshTokenValidity, DEFAULT_REFRESH_TOKEN_VALIDITY),
+                existOrDefaultPayload(payloadClazz),
+                existOrDefaultSubject(subjectClazz),
                 Keys.hmacShaKeyFor(secretKey.getBytes())
         );
     }
@@ -76,16 +79,23 @@ public class JwtPropertiesRegistry {
         }
     }
 
-    private long existOrDefault(long validityInSecond, long defaultValidityInSecond) {
+    private long existOrDefaultValidity(long validityInSecond, long defaultValidityInSecond) {
         if (validityInSecond == 0) {
             return defaultValidityInSecond;
         }
         return validityInSecond;
     }
 
-    private Class<?> existOrDefault(Class<?> subjectClazz, Class<?> defaultSubjectClazz) {
-        if (subjectClazz == null) {
-            return defaultSubjectClazz;
+    private Class<? extends Payload> existOrDefaultPayload(Class<? extends Payload> payloadClazz) {
+        if (Objects.isNull(payloadClazz)) {
+            return DEFAULT_PAYLOAD_CLAZZ;
+        }
+        return payloadClazz;
+    }
+
+    private Class<?> existOrDefaultSubject(Class<?> subjectClazz) {
+        if (Objects.isNull(subjectClazz)) {
+            return DEFAULT_SUBJECT_CLAZZ;
         }
         return subjectClazz;
     }

@@ -22,7 +22,7 @@ public record JwtProperties(
         String secretKey,
         long accessTokenValidity,
         long refreshTokenValidity,
-        Class<?> payloadClazz,
+        Class<? extends Payload> payloadClazz,
         Class<?> subjectClazz,
         Key key
 ) {
