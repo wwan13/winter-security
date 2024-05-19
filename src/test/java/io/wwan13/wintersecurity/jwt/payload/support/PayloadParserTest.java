@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload;
+package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
-import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

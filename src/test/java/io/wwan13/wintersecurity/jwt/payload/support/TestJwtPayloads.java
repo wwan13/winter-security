@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload;
+package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
