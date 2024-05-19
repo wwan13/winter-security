@@ -16,6 +16,7 @@
 
 package io.wwan13.wintersecurity.jwt.payload;
 
+import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
@@ -24,7 +25,7 @@ import java.util.Set;
 
 public class TestJwtPayloads {
 
-    static class JwtPayloadWithWrapperClassSubject extends JwtPayload {
+    static class JwtPayloadWithWrapperClassSubject implements Payload {
         @Subject Long subject;
         @Roles Set<String> roles;
 
@@ -34,7 +35,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithDataTypeSubject extends JwtPayload {
+    static class JwtPayloadWithDataTypeSubject implements Payload {
         @Subject long subject;
         @Roles Set<String> roles;
 
@@ -44,7 +45,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithCollectionClassRoles extends JwtPayload {
+    static class JwtPayloadWithCollectionClassRoles implements Payload {
         @Subject long subject;
         @Roles Set<String> roles;
 
@@ -54,7 +55,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithNoneCollectionClassRoles extends JwtPayload {
+    static class JwtPayloadWithNoneCollectionClassRoles implements Payload {
         @Subject long subject;
         @Roles String roles;
 
@@ -64,7 +65,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithOtherObjectSetRoles extends JwtPayload {
+    static class JwtPayloadWithOtherObjectSetRoles implements Payload {
         @Subject long subject;
         @Roles Set<Object> roles;
 
@@ -74,7 +75,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithSubjectFieldNameId extends JwtPayload {
+    static class JwtPayloadWithSubjectFieldNameId implements Payload {
         @Subject long id;
         @Roles Set<String> roles;
 
@@ -84,7 +85,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithRolesFieldNameAuthorities extends JwtPayload {
+    static class JwtPayloadWithRolesFieldNameAuthorities implements Payload {
         @Subject long id;
         @Roles Set<String> authorities;
 
@@ -94,7 +95,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithNoSubject extends JwtPayload {
+    static class JwtPayloadWithNoSubject implements Payload {
         @Roles Set<String> roles;
 
         public JwtPayloadWithNoSubject(Set<String> roles) {
@@ -102,7 +103,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithTwoSubject extends JwtPayload {
+    static class JwtPayloadWithTwoSubject implements Payload {
         @Subject long subject1;
         @Subject long subject2;
         @Roles Set<String> roles;
@@ -114,7 +115,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithNoRoles extends JwtPayload {
+    static class JwtPayloadWithNoRoles implements Payload {
         @Subject long subject;
 
         public JwtPayloadWithNoRoles(long subject) {
@@ -122,7 +123,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithTwoRoles extends JwtPayload {
+    static class JwtPayloadWithTwoRoles implements Payload {
         @Subject long subject;
         @Roles Set<String> roles1;
         @Roles Set<String> roles2;
@@ -134,7 +135,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithDataTypeAndWrapperClassClaims extends JwtPayload {
+    static class JwtPayloadWithDataTypeAndWrapperClassClaims implements Payload {
         @Subject long subject;
         @Roles Set<String> roles;
         @Claim long dataTypeClaim;
@@ -152,7 +153,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim extends JwtPayload {
+    static class JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim implements Payload {
         @Subject long subject;
         @Roles Set<String> roles;
         @Claim long annotated;
@@ -171,7 +172,7 @@ public class TestJwtPayloads {
         }
     }
 
-    static class JwtPayloadWithValueEnteredClaim extends JwtPayload {
+    static class JwtPayloadWithValueEnteredClaim implements Payload {
         @Subject long subject;
         @Roles Set<String> roles;
         @Claim(value = "entered") long claim;
