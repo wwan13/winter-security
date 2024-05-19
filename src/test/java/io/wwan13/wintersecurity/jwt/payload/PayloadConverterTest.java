@@ -18,6 +18,7 @@ package io.wwan13.wintersecurity.jwt.payload;
 
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.jwt.Payload;
+import io.wwan13.wintersecurity.jwt.PayloadConverter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -27,7 +28,9 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class JwtPayloadTest extends UnitTest {
+class PayloadConverterTest extends UnitTest {
+
+    private static PayloadConverter payloadConverter = new JwtPayloadConverter();
 
     @Test
     void should_SubjectConvertToString_when_SubjectIsWrapperClass() {
@@ -37,7 +40,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithWrapperClassSubject(subject, roles);
 
         // when
-        String result = payload.asSubject();
+        String result = payloadConverter.asSubject(payload);
 
         // then
         assertThat(result).isEqualTo(subject.toString());
@@ -51,7 +54,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithDataTypeSubject(subject, roles);
 
         // when
-        String result = payload.asSubject();
+        String result = payloadConverter.asSubject(payload);
 
         // then
         assertThat(result).isEqualTo(Objects.toString(subject));
@@ -65,7 +68,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithSubjectFieldNameId(id, roles);
 
         // when
-        String result = payload.asSubject();
+        String result = payloadConverter.asSubject(payload);
 
         // then
         assertThat(result).isEqualTo(Objects.toString(id));
@@ -78,7 +81,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithNoSubject(roles);
 
         // when, then
-        assertThatThrownBy(payload::asSubject)
+        assertThatThrownBy(() -> payloadConverter.asSubject(payload))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("cannot be empty");
     }
@@ -92,7 +95,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithTwoSubject(subject1, subject2, roles);
 
         // when, then
-        assertThatThrownBy(payload::asSubject)
+        assertThatThrownBy(() -> payloadConverter.asSubject(payload))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("cannot be more than");
     }
@@ -105,7 +108,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithCollectionClassRoles(subject, roles);
 
         // when
-        Set<String> result = payload.asRoles();
+        Set<String> result = payloadConverter.asRoles(payload);
 
         // then
         assertThat(result).isEqualTo(roles);
@@ -119,7 +122,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles(subject, roles);
 
         // when
-        Set<String> result = payload.asRoles();
+        Set<String> result = payloadConverter.asRoles(payload);
 
         // then
         assertThat(result).isEqualTo(Set.of(roles));
@@ -133,7 +136,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles(subject, roles);
 
         // when
-        Set<String> result = payload.asRoles();
+        Set<String> result = payloadConverter.asRoles(payload);
 
         // then
         assertThat(result).contains("1", "2");
@@ -147,7 +150,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities(subject, authorities);
 
         // when
-        Set<String> result = payload.asRoles();
+        Set<String> result = payloadConverter.asRoles(payload);
 
         // then
         assertThat(result).isEqualTo(authorities);
@@ -160,7 +163,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithNoRoles(subject);
 
         // when, then
-        assertThatThrownBy(payload::asRoles)
+        assertThatThrownBy(() -> payloadConverter.asRoles(payload))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("cannot be empty");
     }
@@ -174,7 +177,7 @@ class JwtPayloadTest extends UnitTest {
         Payload payload = new TestJwtPayloads.JwtPayloadWithTwoRoles(subject, roles1, roles2);
 
         // when, then
-        assertThatThrownBy(payload::asRoles)
+        assertThatThrownBy(() -> payloadConverter.asRoles(payload))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("cannot be more than");
     }
@@ -190,7 +193,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithDataTypeAndWrapperClassClaims(subject, roles, dataTypeClaim, wrapperClassClaim);
 
         // when
-        Map<String, Object> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payloadConverter.asAdditionalClaims(payload);
 
         // then
         result.keySet().forEach(key ->
@@ -211,7 +214,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         // when
-        Map<String, Object> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payloadConverter.asAdditionalClaims(payload);
 
         // then
         assertThat(result.keySet().size()).isEqualTo(2);
@@ -227,7 +230,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         // when
-        Map<String, Object> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payloadConverter.asAdditionalClaims(payload);
 
         // then
         assertThat(result.keySet()).contains("annotated", "notAnnotated");
@@ -243,7 +246,7 @@ class JwtPayloadTest extends UnitTest {
                 .JwtPayloadWithValueEnteredClaim(subject, roles, claim);
 
         // when
-        Map<String, Object> result = payload.asAdditionalClaims();
+        Map<String, Object> result = payloadConverter.asAdditionalClaims(payload);
 
         // then
         assertThat(result.keySet()).contains("entered");

@@ -17,6 +17,7 @@
 package io.wwan13.wintersecurity.jwt.payload;
 
 import io.wwan13.wintersecurity.jwt.Payload;
+import io.wwan13.wintersecurity.jwt.PayloadConverter;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
@@ -26,20 +27,20 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class JwtPayload implements Payload {
+public class JwtPayloadConverter implements PayloadConverter {
 
     private static final int FIRST_ELEMENT_INDEX = 0;
 
     @Override
-    public String asSubject() {
-        Field field = findFieldByDeclaredAnnotation(Subject.class);
-        return Objects.toString(getFieldValue(field));
+    public String asSubject(Payload payload) {
+        Field field = findFieldByDeclaredAnnotation(payload, Subject.class);
+        return Objects.toString(getFieldValue(payload, field));
     }
 
     @Override
-    public Set<String> asRoles() {
-        Field field = findFieldByDeclaredAnnotation(Roles.class);
-        Object values = getFieldValue(field);
+    public Set<String> asRoles(Payload payload) {
+        Field field = findFieldByDeclaredAnnotation(payload, Roles.class);
+        Object values = getFieldValue(payload, field);
 
         if (values instanceof Collection<?>) {
             return ((Collection<?>) values).stream()
@@ -50,8 +51,11 @@ public abstract class JwtPayload implements Payload {
         return Collections.singleton(Objects.toString(values));
     }
 
-    private Field findFieldByDeclaredAnnotation(Class<? extends Annotation> declared) {
-        List<Field> fields = Arrays.stream(this.getClass().getDeclaredFields())
+    private Field findFieldByDeclaredAnnotation(
+            Payload payload,
+            Class<? extends Annotation> declared
+    ) {
+        List<Field> fields = Arrays.stream(payload.getClass().getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(declared))
                 .toList();
 
@@ -60,7 +64,10 @@ public abstract class JwtPayload implements Payload {
         return fields.get(FIRST_ELEMENT_INDEX);
     }
 
-    private void validateExistsOnlyOne(List<Field> fields, Class<? extends Annotation> declared) {
+    private void validateExistsOnlyOne(
+            List<Field> fields,
+            Class<? extends Annotation> declared
+    ) {
         if (fields.size() > 1) {
             throw new IllegalStateException(declared.getSimpleName() + " cannot be more than two");
         }
@@ -70,20 +77,20 @@ public abstract class JwtPayload implements Payload {
     }
 
     @Override
-    public Map<String, Object> asAdditionalClaims() {
+    public Map<String, Object> asAdditionalClaims(Payload payload) {
         Map<String, Object> additionalClaims = new HashMap<>();
 
-        findAdditionalClaims().forEach(field -> {
+        findAdditionalClaims(payload).forEach(field -> {
             String key = getClaimKey(field);
-            Object value = getFieldValue(field);
+            Object value = getFieldValue(payload, field);
             additionalClaims.put(key, value);
         });
 
         return additionalClaims;
     }
 
-    private List<Field> findAdditionalClaims() {
-        return Arrays.stream(this.getClass().getDeclaredFields())
+    private List<Field> findAdditionalClaims(Payload payload) {
+        return Arrays.stream(payload.getClass().getDeclaredFields())
                 .filter(this::isAdditionalClaim)
                 .toList();
     }
@@ -104,10 +111,10 @@ public abstract class JwtPayload implements Payload {
         }
     }
 
-    private Object getFieldValue(Field field) {
+    private Object getFieldValue(Payload payload, Field field) {
         try {
             field.setAccessible(true);
-            return field.get(this);
+            return field.get(payload);
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("can't access to " + field.getClass().getSimpleName());
         }

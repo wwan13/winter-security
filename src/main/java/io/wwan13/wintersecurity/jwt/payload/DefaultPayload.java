@@ -16,20 +16,29 @@
 
 package io.wwan13.wintersecurity.jwt.payload;
 
+import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 
 import java.util.Set;
 
-public class DefaultPayload extends JwtPayload {
+public class DefaultPayload implements Payload {
 
     @Subject
-    private final Object subject;
+    private Object subject;
     @Roles
-    private final Set<Object> roles;
+    private Set<Object> roles;
 
     public DefaultPayload(Object subject, Set<Object> roles) {
         this.subject = subject;
         this.roles = roles;
+    }
+
+    public Object getSubject() {
+        return subject;
+    }
+
+    public Set<Object> getRoles() {
+        return roles;
     }
 }

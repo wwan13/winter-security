@@ -16,13 +16,12 @@
 
 package io.wwan13.wintersecurity.jwt;
 
-import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
-
+import java.util.Map;
 import java.util.Set;
 
-public interface Payload {
+public interface PayloadConverter {
 
-    static DefaultPayload of(Object subject, Set<Object> roles) {
-        return new DefaultPayload(subject, roles);
-    }
+    String asSubject(Payload payload);
+    Set<String> asRoles(Payload payload);
+    Map<String, Object> asAdditionalClaims(Payload payload);
 }
