@@ -20,7 +20,9 @@ import io.wwan13.wintersecurity.exception.ErrorCode;
 
 public enum UnauthorizedErrorCode implements ErrorCode {
 
-    EXAMPLE("message");
+    INVALID_JWT_TOKEN("this token is invalid"),
+    EXPIRED_JWT_TOKEN("this token is expired")
+    ;
 
     private final String message;
 
