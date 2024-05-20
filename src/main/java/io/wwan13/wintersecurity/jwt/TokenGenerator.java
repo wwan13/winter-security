@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.exception.unauthirized;
+package io.wwan13.wintersecurity.jwt;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
-
-public enum UnauthorizedErrorCode implements ErrorCode {
-
-    INVALID_JWT_TOKEN("this token is invalid"),
-    EXPIRED_JWT_TOKEN("this token is expired")
-    ;
-
-    private final String message;
-
-    UnauthorizedErrorCode(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String getMessage() {
-        return null;
-    }
+public interface TokenGenerator {
+    String accessToken(Payload payload);
+    String refreshToken(Payload payload);
 }

@@ -19,7 +19,7 @@ package io.wwan13.wintersecurity.jwt;
 import java.util.Map;
 import java.util.Set;
 
-public interface PayloadConverter {
+public interface PayloadParser {
 
     String asSubject(Payload payload);
     Set<String> asRoles(Payload payload);

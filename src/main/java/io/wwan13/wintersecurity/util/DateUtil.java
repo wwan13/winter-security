@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.exception.unauthirized;
+package io.wwan13.wintersecurity.util;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
+import java.util.Date;
 
-public enum UnauthorizedErrorCode implements ErrorCode {
+public class DateUtil {
 
-    INVALID_JWT_TOKEN("this token is invalid"),
-    EXPIRED_JWT_TOKEN("this token is expired")
-    ;
-
-    private final String message;
-
-    UnauthorizedErrorCode(String message) {
-        this.message = message;
+    private DateUtil() {
+        throw new IllegalStateException("Cannot instantiate a utility class!");
     }
 
-    @Override
-    public String getMessage() {
-        return null;
+    public static Date now() {
+        return new Date();
+    }
+
+    public static Date addFromNow(long addValue) {
+        return new Date(now().getTime() + addValue);
     }
 }

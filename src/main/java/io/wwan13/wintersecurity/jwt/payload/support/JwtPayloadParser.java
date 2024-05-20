@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload;
+package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.jwt.Payload;
-import io.wwan13.wintersecurity.jwt.PayloadConverter;
+import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JwtPayloadConverter implements PayloadConverter {
+public class JwtPayloadParser implements PayloadParser {
 
     private static final int FIRST_ELEMENT_INDEX = 0;
 
