@@ -23,11 +23,11 @@ import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
-public class JwtConfigurer {
+public class JwtPropertiesRegistrar {
 
     private final WebSecurityConfigurer webSecurityConfigurer;
 
-    public JwtConfigurer(WebSecurityConfigurer webSecurityConfigurer) {
+    public JwtPropertiesRegistrar(WebSecurityConfigurer webSecurityConfigurer) {
         this.webSecurityConfigurer = webSecurityConfigurer;
     }
 
