@@ -16,9 +16,11 @@
 
 package io.wwan13.wintersecurity.config;
 
+import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 
 public interface WebSecurityConfigurer {
 
+    void registerAuthPatterns(AuthorizedRequestRegistry registry);
     void configureJwt(JwtPropertiesRegistry registry);
 }
