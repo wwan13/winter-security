@@ -16,6 +16,7 @@
 
 package io.wwan13.wintersecurity.context.config;
 
+import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
 import io.wwan13.wintersecurity.config.EnableWebSecurity;
 import io.wwan13.wintersecurity.config.WebSecurityConfigurer;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
@@ -29,6 +30,16 @@ public class TestContextConfig {
 
     @Component
     static class TestWebSecurityConfigurer implements WebSecurityConfigurer {
+
+        @Override
+        public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
+            registry
+                    .uriPatterns("/api/test/**")
+                    .allHttpMethods()
+                    .permitAll()
+
+                    .elseRequestAuthenticated();
+        }
 
         @Override
         public void configureJwt(JwtPropertiesRegistry registry) {
