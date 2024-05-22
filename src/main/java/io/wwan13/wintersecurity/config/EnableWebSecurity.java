@@ -25,7 +25,8 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Import({
         AuthorizedRequestRegistrar.class,
-        JwtPropertiesRegistrar.class
+        JwtPropertiesRegistrar.class,
+        JwtConfigure.class
 })
 public @interface EnableWebSecurity {
 }
