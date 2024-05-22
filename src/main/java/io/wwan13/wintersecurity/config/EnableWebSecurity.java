@@ -23,6 +23,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@Import({JwtConfigurer.class})
+@Import({JwtPropertiesRegistrar.class})
 public @interface EnableWebSecurity {
 }
