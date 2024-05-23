@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.exception;
+package io.wwan13.wintersecurity.exception.unauthirized;
 
-public interface ErrorCode {
-    String name();
-    String getMessage();
+import io.wwan13.wintersecurity.exception.HttpStatusCode;
+import io.wwan13.wintersecurity.exception.WinterSecurityException;
+
+public class InvalidJwtTokenException extends WinterSecurityException {
+
+    public InvalidJwtTokenException() {
+        super(HttpStatusCode.UNAUTHORIZED, "Invalid jwt token");
+    }
 }

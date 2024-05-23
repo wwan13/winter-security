@@ -16,16 +16,12 @@
 
 package io.wwan13.wintersecurity.exception.forbidden;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
 import io.wwan13.wintersecurity.exception.HttpStatusCode;
 import io.wwan13.wintersecurity.exception.WinterSecurityException;
 
 public class ForbiddenException extends WinterSecurityException {
-    public ForbiddenException(ErrorCode errorCode) {
-        super(HttpStatusCode.FORBIDDEN, errorCode);
-    }
 
-    public ForbiddenException(String errorCode, String message) {
-        super(HttpStatusCode.FORBIDDEN, errorCode, message);
+    public ForbiddenException() {
+        super(HttpStatusCode.FORBIDDEN, "Do not have access permission");
     }
 }

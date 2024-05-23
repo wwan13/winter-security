@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.exception.forbidden;
+package io.wwan13.wintersecurity.exception.unauthirized;
 
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.exception.HttpStatusCode;
@@ -22,15 +22,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ForbiddenExceptionTest extends UnitTest {
+class InvalidJwtTokenExceptionTest extends UnitTest {
 
     @Test
-    void should_HttpStatusCodeIs403Forbidden_when_ExceptionThrows() {
+    void should_HttpStatusCodeIs401Unauthorized_when_ExceptionThrows() {
         // given, when
-        ForbiddenException exception = new ForbiddenException();
+        InvalidJwtTokenException exception = new InvalidJwtTokenException();
 
         // then
-        assertThat(exception.getHttpStatusCode()).isEqualTo(HttpStatusCode.FORBIDDEN);
-        assertThat(exception.getMessage()).isEqualTo("Do not have access permission");
+        assertThat(exception.getHttpStatusCode()).isEqualTo(HttpStatusCode.UNAUTHORIZED);
+        assertThat(exception.getMessage()).isEqualTo("Invalid jwt token");
     }
+
 }

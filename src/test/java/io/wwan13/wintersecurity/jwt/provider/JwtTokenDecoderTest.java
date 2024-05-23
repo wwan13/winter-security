@@ -16,6 +16,8 @@
 
 package io.wwan13.wintersecurity.jwt.provider;
 
+import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
+import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.Payload;
@@ -63,9 +65,8 @@ class JwtTokenDecoderTest {
 
         // when, then
         assertThatThrownBy(() -> tokenDecoder.decode(invalidToken))
-                .isInstanceOf(UnauthorizedException.class)
-                .hasFieldOrPropertyWithValue("httpStatusCode", 401)
-                .hasFieldOrPropertyWithValue("errorCode", "INVALID_JWT_TOKEN");
+                .isInstanceOf(InvalidJwtTokenException.class)
+                .hasFieldOrPropertyWithValue("httpStatusCode", 401);
     }
 
     @Test
@@ -90,8 +91,7 @@ class JwtTokenDecoderTest {
 
         // when, then
         assertThatThrownBy(() -> tokenDecoder.decode(invalidToken))
-                .isInstanceOf(UnauthorizedException.class)
-                .hasFieldOrPropertyWithValue("httpStatusCode", 401)
-                .hasFieldOrPropertyWithValue("errorCode", "EXPIRED_JWT_TOKEN");
+                .isInstanceOf(ExpiredJwtTokenException.class)
+                .hasFieldOrPropertyWithValue("httpStatusCode", 401);
     }
 }

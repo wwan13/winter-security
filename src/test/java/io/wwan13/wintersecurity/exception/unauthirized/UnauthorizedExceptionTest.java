@@ -25,14 +25,11 @@ class UnauthorizedExceptionTest {
 
     @Test
     void should_HttpStatusCodeIs401Unauthorized_when_ExceptionThrows() {
-        // given
-        final String errorCode = "TEST_ERROR_01";
-        final String message = "error message";
-
-        // when
-        UnauthorizedException exception = new UnauthorizedException(errorCode, message);
+        // given, when
+        UnauthorizedException exception = new UnauthorizedException();
 
         // then
         assertThat(exception.getHttpStatusCode()).isEqualTo(HttpStatusCode.UNAUTHORIZED);
+        assertThat(exception.getMessage()).isEqualTo("Do not contain authentication information");
     }
 }

@@ -24,35 +24,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class WinterSecurityExceptionTest extends UnitTest {
 
     @Test
-    void should_ThrowException_when_HttpStatusErrorCodeAndMessageEntered() {
+    void should_ThrowException_when_HttpStatusAndMessageEntered() {
         // given
         final int httpStatus = 400;
-        final String errorCode = "TEST_ERROR_01";
         final String message = "error message";
 
         // when
-        WinterSecurityException exception = new WinterSecurityException(httpStatus, errorCode, message);
+        WinterSecurityException exception = new WinterSecurityException(httpStatus, message);
 
         // then
         assertThat(exception).isInstanceOf(WinterSecurityException.class);
         assertThat(exception.getHttpStatusCode()).isEqualTo(httpStatus);
-        assertThat(exception.getErrorCode()).isEqualTo(errorCode);
         assertThat(exception.getMessage()).isEqualTo(message);
-    }
-
-    @Test
-    void should_ThrowException_when_HttpStatueCodeAndErrorCodeEntered() {
-        // given
-        final int httpStatus = 400;
-        final ErrorCode errorCode = TestErrorCode.TEST_ERROR_01;
-
-        // when
-        WinterSecurityException exception = new WinterSecurityException(httpStatus, errorCode);
-
-        // then
-        assertThat(exception).isInstanceOf(WinterSecurityException.class);
-        assertThat(exception.getHttpStatusCode()).isEqualTo(httpStatus);
-        assertThat(exception.getErrorCode()).isEqualTo(errorCode.name());
-        assertThat(exception.getMessage()).isEqualTo(errorCode.getMessage());
     }
 }

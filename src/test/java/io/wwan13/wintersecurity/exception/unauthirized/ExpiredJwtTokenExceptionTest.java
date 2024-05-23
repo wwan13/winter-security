@@ -16,22 +16,21 @@
 
 package io.wwan13.wintersecurity.exception.unauthirized;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
+import io.wwan13.wintersecurity.UnitTest;
+import io.wwan13.wintersecurity.exception.HttpStatusCode;
+import org.junit.jupiter.api.Test;
 
-public enum UnauthorizedErrorCode implements ErrorCode {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    INVALID_JWT_TOKEN("this token is invalid"),
-    EXPIRED_JWT_TOKEN("this token is expired")
-    ;
+class ExpiredJwtTokenExceptionTest extends UnitTest {
 
-    private final String message;
+    @Test
+    void should_HttpStatusCodeIs401Unauthorized_when_ExceptionThrows() {
+        // given, when
+        ExpiredJwtTokenException exception = new ExpiredJwtTokenException();
 
-    UnauthorizedErrorCode(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String getMessage() {
-        return null;
+        // then
+        assertThat(exception.getHttpStatusCode()).isEqualTo(HttpStatusCode.UNAUTHORIZED);
+        assertThat(exception.getMessage()).isEqualTo("expired jwt token");
     }
 }
