@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.exception.forbidden;
+package io.wwan13.wintersecurity.exception.unauthirized;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
+import io.wwan13.wintersecurity.exception.HttpStatusCode;
+import io.wwan13.wintersecurity.exception.WinterSecurityException;
 
-public enum ForbiddenErrorCode implements ErrorCode {
+public class ExpiredJwtTokenException extends WinterSecurityException {
 
-    EXAMPLE("message");
-
-    private final String message;
-
-    ForbiddenErrorCode(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String getMessage() {
-        return null;
+    public ExpiredJwtTokenException() {
+        super(HttpStatusCode.UNAUTHORIZED, "expired jwt token");
     }
 }

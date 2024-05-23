@@ -17,8 +17,8 @@
 package io.wwan13.wintersecurity.jwt.provider;
 
 import io.jsonwebtoken.*;
-import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedErrorCode;
-import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
+import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
+import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 
@@ -45,9 +45,9 @@ public class JwtTokenDecoder implements TokenDecoder {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new UnauthorizedException(UnauthorizedErrorCode.EXPIRED_JWT_TOKEN);
+            throw new ExpiredJwtTokenException();
         } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            throw new UnauthorizedException(UnauthorizedErrorCode.INVALID_JWT_TOKEN);
+            throw new InvalidJwtTokenException();
         }
     }
 }

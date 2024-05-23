@@ -18,27 +18,15 @@ package io.wwan13.wintersecurity.exception;
 
 public class WinterSecurityException extends RuntimeException {
     private final int httpStatusCode;
-    private final String errorCode;
     private final String message;
 
-    public WinterSecurityException(int httpStatusCode, ErrorCode errorCode) {
+    public WinterSecurityException(int httpStatusCode, String message) {
         this.httpStatusCode = httpStatusCode;
-        this.errorCode = errorCode.name();
-        this.message = errorCode.getMessage();
-    }
-
-    public WinterSecurityException(int httpStatusCode, String errorCode, String message) {
-        this.httpStatusCode = httpStatusCode;
-        this.errorCode = errorCode;
         this.message = message;
     }
 
     public int getHttpStatusCode() {
         return httpStatusCode;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
     }
 
     public String getMessage() {

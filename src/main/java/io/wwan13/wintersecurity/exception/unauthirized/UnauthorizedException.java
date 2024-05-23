@@ -16,16 +16,12 @@
 
 package io.wwan13.wintersecurity.exception.unauthirized;
 
-import io.wwan13.wintersecurity.exception.ErrorCode;
 import io.wwan13.wintersecurity.exception.HttpStatusCode;
 import io.wwan13.wintersecurity.exception.WinterSecurityException;
 
 public class UnauthorizedException extends WinterSecurityException {
-    public UnauthorizedException(ErrorCode errorCode) {
-        super(HttpStatusCode.UNAUTHORIZED, errorCode);
-    }
 
-    public UnauthorizedException(String errorCode, String message) {
-        super(HttpStatusCode.UNAUTHORIZED, errorCode, message);
+    public UnauthorizedException() {
+        super(HttpStatusCode.UNAUTHORIZED, "Do not contain authentication information");
     }
 }
