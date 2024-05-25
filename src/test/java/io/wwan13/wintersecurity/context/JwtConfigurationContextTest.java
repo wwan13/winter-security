@@ -21,7 +21,6 @@ import io.wwan13.wintersecurity.context.config.TestContextConfig;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
-import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
@@ -32,7 +31,7 @@ import org.springframework.context.annotation.Import;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({TestContextConfig.class})
-public class JwtConfigureContextTest extends ContextTest {
+public class JwtConfigurationContextTest extends ContextTest {
 
     @Autowired
     TokenGenerator tokenGenerator;
