@@ -22,33 +22,28 @@ import io.wwan13.wintersecurity.config.WebSecurityConfigurer;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.stereotype.Component;
 
 @TestConfiguration
 @EnableWebSecurity
-public class TestContextConfig {
+public class TestContextConfig implements WebSecurityConfigurer {
 
-    @Component
-    static class TestWebSecurityConfigurer implements WebSecurityConfigurer {
+    @Override
+    public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
+        registry
+                .uriPatterns("/api/test/**")
+                .allHttpMethods()
+                .permitAll()
 
-        @Override
-        public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
-            registry
-                    .uriPatterns("/api/test/**")
-                    .allHttpMethods()
-                    .permitAll()
+                .elseRequestAuthenticated();
+    }
 
-                    .elseRequestAuthenticated();
-        }
-
-        @Override
-        public void configureJwt(JwtPropertiesRegistry registry) {
-            registry
-                    .secretKey("secretkey123123123123123123123123123123123123123123123123")
-                    .accessTokenValidity(1000L)
-                    .refreshTokenValidity(1000L)
-                    .payloadClazz(DefaultPayload.class)
-                    .subjectClazz(long.class);
-        }
+    @Override
+    public void configureJwt(JwtPropertiesRegistry registry) {
+        registry
+                .secretKey("secretkey123123123123123123123123123123123123123123123123")
+                .accessTokenValidity(1000L)
+                .refreshTokenValidity(1000L)
+                .payloadClazz(DefaultPayload.class)
+                .subjectClazz(long.class);
     }
 }

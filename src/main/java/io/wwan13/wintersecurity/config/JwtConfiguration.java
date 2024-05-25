@@ -23,31 +23,27 @@ import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
-public class JwtConfigure {
+public class JwtConfiguration {
 
     private final JwtProperties jwtProperties;
 
-    public JwtConfigure(JwtProperties jwtProperties) {
+    public JwtConfiguration(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
     }
 
     @Bean
-    @ConditionalOnBean({WebSecurityConfigurer.class})
     public TokenGenerator tokenGenerator() {
         return new JwtTokenGenerator(jwtProperties, payloadParser());
     }
 
     @Bean
-    @ConditionalOnBean({WebSecurityConfigurer.class})
     public TokenDecoder tokenDecoder() {
         return new JwtTokenDecoder(jwtProperties);
     }
 
     @Bean
-    @ConditionalOnBean({WebSecurityConfigurer.class})
     public PayloadParser payloadParser() {
         return new JwtPayloadParser();
     }

@@ -16,20 +16,14 @@
 
 package io.wwan13.wintersecurity.config;
 
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.lang.annotation.*;
+public class PasswordEncoderConfiguration {
 
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-@Import({
-        AuthorizedRequestRegistrar.class,
-        AuthConfiguration.class,
-        AuthProcessorRegistrar.class,
-        JwtPropertiesRegistrar.class,
-        JwtConfiguration.class,
-        PasswordEncoderConfiguration.class
-})
-public @interface EnableWebSecurity {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

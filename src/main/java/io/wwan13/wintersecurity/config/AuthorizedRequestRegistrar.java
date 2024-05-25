@@ -31,7 +31,6 @@ public class AuthorizedRequestRegistrar {
     }
 
     @Bean
-    @ConditionalOnBean({WebSecurityConfigurer.class})
     public AuthorizedRequest authorizedRequest() {
         AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
         webSecurityConfigurer.registerAuthPatterns(registry);

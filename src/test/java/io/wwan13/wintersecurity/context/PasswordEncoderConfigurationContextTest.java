@@ -18,44 +18,25 @@ package io.wwan13.wintersecurity.context;
 
 import io.wwan13.wintersecurity.ContextTest;
 import io.wwan13.wintersecurity.context.config.TestContextConfig;
-import io.wwan13.wintersecurity.jwt.PayloadParser;
-import io.wwan13.wintersecurity.jwt.TokenDecoder;
-import io.wwan13.wintersecurity.jwt.TokenGenerator;
-import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
-import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
-import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
-import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import({TestContextConfig.class})
-public class JwtConfigureContextTest extends ContextTest {
+@Import(TestContextConfig.class)
+public class PasswordEncoderConfigurationContextTest extends ContextTest {
 
     @Autowired
-    TokenGenerator tokenGenerator;
-
-    @Autowired
-    TokenDecoder tokenDecoder;
-
-    @Autowired
-    PayloadParser payloadParser;
+    PasswordEncoder passwordEncoder;
 
     @Test
     void should_RegisteredInSpringIocWithEnteredValue_when_ContextLoaded() {
         // given, then, then
-        assertThat(tokenGenerator)
-                .isInstanceOf(TokenGenerator.class)
-                .isExactlyInstanceOf(JwtTokenGenerator.class);
-
-        assertThat(tokenDecoder)
-                .isInstanceOf(TokenDecoder.class)
-                .isExactlyInstanceOf(JwtTokenDecoder.class);
-
-        assertThat(payloadParser)
-                .isInstanceOf(PayloadParser.class)
-                .isExactlyInstanceOf(JwtPayloadParser.class);
+        assertThat(passwordEncoder)
+                .isInstanceOf(PasswordEncoder.class)
+                .isExactlyInstanceOf(BCryptPasswordEncoder.class);
     }
 }

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-
 package io.wwan13.wintersecurity.config;
 
 import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
 public class JwtPropertiesRegistrar {
@@ -31,8 +29,8 @@ public class JwtPropertiesRegistrar {
         this.webSecurityConfigurer = webSecurityConfigurer;
     }
 
+
     @Bean
-    @ConditionalOnBean({WebSecurityConfigurer.class})
     public JwtProperties jwtProperties() {
         JwtPropertiesRegistry registry = new JwtPropertiesRegistry();
         webSecurityConfigurer.configureJwt(registry);
