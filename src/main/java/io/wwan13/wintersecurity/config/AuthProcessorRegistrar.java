@@ -16,20 +16,20 @@
 
 package io.wwan13.wintersecurity.config;
 
-import org.springframework.context.annotation.Import;
+import io.wwan13.wintersecurity.auth.processor.AbstractInterceptorAuthProcessor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.lang.annotation.*;
+public class AuthProcessorRegistrar implements WebMvcConfigurer {
 
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-@Import({
-        AuthorizedRequestRegistrar.class,
-        AuthConfiguration.class,
-        AuthProcessorRegistrar.class,
-        JwtPropertiesRegistrar.class,
-        JwtConfiguration.class,
-        PasswordEncoderConfiguration.class
-})
-public @interface EnableWebSecurity {
+    private final AbstractInterceptorAuthProcessor authProcessor;
+
+    public AuthProcessorRegistrar(AbstractInterceptorAuthProcessor authProcessor) {
+        this.authProcessor = authProcessor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authProcessor);
+    }
 }
