@@ -18,6 +18,7 @@ package io.wwan13.wintersecurity.context;
 
 import io.wwan13.wintersecurity.ContextTest;
 import io.wwan13.wintersecurity.context.config.TestContextConfig;
+import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
@@ -40,6 +41,9 @@ public class JwtConfigurationContextTest extends ContextTest {
     TokenDecoder tokenDecoder;
 
     @Autowired
+    PayloadAnalysis payloadAnalysis;
+
+    @Autowired
     PayloadParser payloadParser;
 
     @Test
@@ -52,6 +56,9 @@ public class JwtConfigurationContextTest extends ContextTest {
         assertThat(tokenDecoder)
                 .isInstanceOf(TokenDecoder.class)
                 .isExactlyInstanceOf(JwtTokenDecoder.class);
+
+        assertThat(payloadAnalysis)
+                .isInstanceOf(PayloadAnalysis.class);
 
         assertThat(payloadParser)
                 .isInstanceOf(PayloadParser.class)

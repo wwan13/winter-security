@@ -17,29 +17,35 @@
 package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.jwt.Payload;
+import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class JwtPayloadParser implements PayloadParser {
 
-    private static final int FIRST_ELEMENT_INDEX = 0;
+    private final PayloadAnalysis payloadAnalysis;
+
+    public JwtPayloadParser(PayloadAnalysis payloadAnalysis) {
+        this.payloadAnalysis = payloadAnalysis;
+    }
 
     @Override
     public String asSubject(Payload payload) {
-        Field field = findFieldByDeclaredAnnotation(payload, Subject.class);
+        Field field = payloadAnalysis.subject();
         return Objects.toString(getFieldValue(payload, field));
     }
 
     @Override
     public Set<String> asRoles(Payload payload) {
-        Field field = findFieldByDeclaredAnnotation(payload, Roles.class);
+        Field field = payloadAnalysis.roles();
         Object values = getFieldValue(payload, field);
 
         if (values instanceof Collection<?>) {
@@ -51,64 +57,15 @@ public class JwtPayloadParser implements PayloadParser {
         return Collections.singleton(Objects.toString(values));
     }
 
-    private Field findFieldByDeclaredAnnotation(
-            Payload payload,
-            Class<? extends Annotation> declared
-    ) {
-        List<Field> fields = Arrays.stream(payload.getClass().getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(declared))
-                .toList();
-
-        validateExistsOnlyOne(fields, declared);
-
-        return fields.get(FIRST_ELEMENT_INDEX);
-    }
-
-    private void validateExistsOnlyOne(
-            List<Field> fields,
-            Class<? extends Annotation> declared
-    ) {
-        if (fields.size() > 1) {
-            throw new IllegalStateException(declared.getSimpleName() + " cannot be more than two");
-        }
-        if (fields.isEmpty()) {
-            throw new IllegalStateException(declared.getSimpleName() + " cannot be empty");
-        }
-    }
-
     @Override
     public Map<String, Object> asAdditionalClaims(Payload payload) {
+        Set<Field> fields = payloadAnalysis.additionalClaims();
         Map<String, Object> additionalClaims = new HashMap<>();
 
-        findAdditionalClaims(payload).forEach(field -> {
-            String key = getClaimKey(field);
-            Object value = getFieldValue(payload, field);
-            additionalClaims.put(key, value);
-        });
+        fields.forEach(field ->
+                additionalClaims.put(field.getName(), getFieldValue(payload, field)));
 
         return additionalClaims;
-    }
-
-    private List<Field> findAdditionalClaims(Payload payload) {
-        return Arrays.stream(payload.getClass().getDeclaredFields())
-                .filter(this::isAdditionalClaim)
-                .toList();
-    }
-
-    private boolean isAdditionalClaim(Field field) {
-        return field.isAnnotationPresent(Claim.class) || field.getDeclaredAnnotations().length == 0;
-    }
-
-    private String getClaimKey(Field field) {
-        try {
-            String value = field.getAnnotation(Claim.class).value();
-            if (value.isEmpty()) {
-                return field.getName();
-            }
-            return value;
-        } catch (NullPointerException e) {
-            return field.getName();
-        }
     }
 
     private Object getFieldValue(Payload payload, Field field) {

@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload.annotation;
+package io.wwan13.wintersecurity.jwt;
 
-import java.lang.annotation.*;
+public interface PayloadAnalyst {
 
-@Documented
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Subject {
+    PayloadAnalysis analyze(JwtProperties jwtProperties);
 }

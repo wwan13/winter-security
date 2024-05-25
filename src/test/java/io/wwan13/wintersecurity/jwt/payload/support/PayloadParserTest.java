@@ -17,8 +17,9 @@
 package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.jwt.Payload;
-import io.wwan13.wintersecurity.jwt.PayloadParser;
+import io.wwan13.wintersecurity.jwt.*;
+import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
+import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -26,11 +27,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PayloadParserTest extends UnitTest {
-
-    private static PayloadParser payloadParser = new JwtPayloadParser();
 
     @Test
     void should_SubjectConvertToString_when_SubjectIsWrapperClass() {
@@ -38,6 +36,10 @@ class PayloadParserTest extends UnitTest {
         final Long subject = 1L;
         final Set<String> roles = Set.of("role");
         Payload payload = new TestJwtPayloads.JwtPayloadWithWrapperClassSubject(subject, roles);
+
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithWrapperClassSubject.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
 
         // when
         String result = payloadParser.asSubject(payload);
@@ -53,6 +55,10 @@ class PayloadParserTest extends UnitTest {
         final Set<String> roles = Set.of("role");
         Payload payload = new TestJwtPayloads.JwtPayloadWithDataTypeSubject(subject, roles);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithDataTypeSubject.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         String result = payloadParser.asSubject(payload);
 
@@ -67,6 +73,10 @@ class PayloadParserTest extends UnitTest {
         final Set<String> roles = Set.of("role");
         Payload payload = new TestJwtPayloads.JwtPayloadWithSubjectFieldNameId(id, roles);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithSubjectFieldNameId.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         String result = payloadParser.asSubject(payload);
 
@@ -75,37 +85,15 @@ class PayloadParserTest extends UnitTest {
     }
 
     @Test
-    void should_ThrowsException_when_SubjectIsNotExist() {
-        // given
-        final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithNoSubject(roles);
-
-        // when, then
-        assertThatThrownBy(() -> payloadParser.asSubject(payload))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("cannot be empty");
-    }
-
-    @Test
-    void should_ThrowsException_when_SubjectIsMoreThanTwo() {
-        // given
-        final long subject1 = 1L;
-        final long subject2 = 2L;
-        final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithTwoSubject(subject1, subject2, roles);
-
-        // when, then
-        assertThatThrownBy(() -> payloadParser.asSubject(payload))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("cannot be more than");
-    }
-
-    @Test
     void should_RolesConvertToSet_when_RolesIsCollectionType() {
         // given
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
         Payload payload = new TestJwtPayloads.JwtPayloadWithCollectionClassRoles(subject, roles);
+
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithCollectionClassRoles.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
 
         // when
         Set<String> result = payloadParser.asRoles(payload);
@@ -121,6 +109,10 @@ class PayloadParserTest extends UnitTest {
         final String roles = "role";
         Payload payload = new TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles(subject, roles);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         Set<String> result = payloadParser.asRoles(payload);
 
@@ -134,6 +126,10 @@ class PayloadParserTest extends UnitTest {
         final long subject = 1L;
         final Set<Object> roles = Set.of(1, 2);
         Payload payload = new TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles(subject, roles);
+
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
 
         // when
         Set<String> result = payloadParser.asRoles(payload);
@@ -149,37 +145,15 @@ class PayloadParserTest extends UnitTest {
         final Set<String> authorities = Set.of("role");
         Payload payload = new TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities(subject, authorities);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         Set<String> result = payloadParser.asRoles(payload);
 
         // then
         assertThat(result).isEqualTo(authorities);
-    }
-
-    @Test
-    void should_ThrowsException_when_RolesIsNotExist() {
-        // given
-        final long subject = 1L;
-        Payload payload = new TestJwtPayloads.JwtPayloadWithNoRoles(subject);
-
-        // when, then
-        assertThatThrownBy(() -> payloadParser.asRoles(payload))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("cannot be empty");
-    }
-
-    @Test
-    void should_ThrowsException_when_RolesIsMoreThanTwo() {
-        // given
-        final long subject = 1L;
-        final Set<String> roles1 = Set.of("role");
-        final Set<String> roles2 = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithTwoRoles(subject, roles1, roles2);
-
-        // when, then
-        assertThatThrownBy(() -> payloadParser.asRoles(payload))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("cannot be more than");
     }
 
     @Test
@@ -191,6 +165,10 @@ class PayloadParserTest extends UnitTest {
         final Long wrapperClassClaim = 1L;
         Payload payload = new TestJwtPayloads
                 .JwtPayloadWithDataTypeAndWrapperClassClaims(subject, roles, dataTypeClaim, wrapperClassClaim);
+
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithDataTypeAndWrapperClassClaims.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
 
         // when
         Map<String, Object> result = payloadParser.asAdditionalClaims(payload);
@@ -213,6 +191,10 @@ class PayloadParserTest extends UnitTest {
         Payload payload = new TestJwtPayloads
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         Map<String, Object> result = payloadParser.asAdditionalClaims(payload);
 
@@ -229,6 +211,10 @@ class PayloadParserTest extends UnitTest {
         Payload payload = new TestJwtPayloads
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
+        PayloadAnalysis payloadAnalysis =
+                getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim.class);
+        PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis);
+
         // when
         Map<String, Object> result = payloadParser.asAdditionalClaims(payload);
 
@@ -236,19 +222,14 @@ class PayloadParserTest extends UnitTest {
         assertThat(result.keySet()).contains("annotated", "notAnnotated");
     }
 
-    @Test
-    void should_KeyIsChanged_when_ValueIsEntered() {
-        // given
-        final long subject = 1L;
-        final Set<String> roles = Set.of("role");
-        final long claim = 1L;
-        Payload payload = new TestJwtPayloads
-                .JwtPayloadWithValueEnteredClaim(subject, roles, claim);
-
-        // when
-        Map<String, Object> result = payloadParser.asAdditionalClaims(payload);
-
-        // then
-        assertThat(result.keySet()).contains("entered");
+    private PayloadAnalysis getPayloadAnalysis(Class<? extends Payload> payloadClazz) {
+        JwtProperties jwtProperties = JwtPropertiesApplier.apply(
+                new JwtPropertiesRegistry()
+                        .secretKey("asdasdasdasdasdasdasdasdasdasdasdasdasdasdasd")
+                        .payloadClazz(payloadClazz)
+                        .subjectClazz(long.class)
+        );
+        PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
+        return payloadAnalyst.analyze(jwtProperties);
     }
 }

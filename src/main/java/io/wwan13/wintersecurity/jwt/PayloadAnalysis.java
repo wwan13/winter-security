@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload.annotation;
+package io.wwan13.wintersecurity.jwt;
 
-import java.lang.annotation.*;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
-@Documented
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Subject {
+public record PayloadAnalysis(
+        Field subject,
+        Field roles,
+        Set<Field> additionalClaims
+) {
+
+    public Set<Field> allClaims() {
+        Set<Field> allClaims = new HashSet<>(additionalClaims);
+        allClaims.add(subject);
+        allClaims.add(roles);
+
+        return allClaims;
+    }
 }

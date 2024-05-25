@@ -22,6 +22,4 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Roles {
-
-    String value() default "Role";
 }
