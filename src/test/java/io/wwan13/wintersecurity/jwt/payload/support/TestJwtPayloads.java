@@ -171,20 +171,4 @@ public class TestJwtPayloads {
             this.notAnnotated = notAnnotated;
         }
     }
-
-    static class JwtPayloadWithValueEnteredClaim implements Payload {
-        @Subject long subject;
-        @Roles Set<String> roles;
-        @Claim(value = "entered") long claim;
-
-        public JwtPayloadWithValueEnteredClaim(
-                long subject,
-                Set<String> roles,
-                long claim
-        ) {
-            this.subject = subject;
-            this.roles = roles;
-            this.claim = claim;
-        }
-    }
 }

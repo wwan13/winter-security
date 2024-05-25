@@ -21,6 +21,7 @@ import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
+import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 
@@ -65,7 +66,12 @@ public class ProviderTestContainer {
                     .subjectClazz(long.class)
     );
 
-    public static PayloadParser payloadParser = new JwtPayloadParser();
+    public static PayloadAnalysis payloadAnalysis() {
+        PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
+        return payloadAnalyst.analyze(jwtProperties);
+    }
+
+    public static PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis());
 
     public static TokenGenerator tokenGenerator = new JwtTokenGenerator(jwtProperties, payloadParser);
 
