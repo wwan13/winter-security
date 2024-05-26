@@ -43,7 +43,7 @@ public class ReflectionPayloadAnalyst implements PayloadAnalyst {
         Field roles = findFieldByDeclaredAnnotation(payloadClazz, Roles.class);
         Set<Field> additionalClaims = findAdditionalClaimFields(payloadClazz);
 
-        return new PayloadAnalysis(subject, roles, additionalClaims);
+        return new PayloadAnalysis(payloadClazz, subject, roles, additionalClaims);
     }
 
     private Field findFieldByDeclaredAnnotation(
