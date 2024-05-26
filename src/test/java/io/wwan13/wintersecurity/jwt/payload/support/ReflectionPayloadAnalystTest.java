@@ -44,6 +44,7 @@ class ReflectionPayloadAnalystTest extends UnitTest {
         PayloadAnalysis payloadAnalysis = payloadAnalyst.analyze(jwtProperties);
 
         // then
+        assertThat(payloadAnalysis.payloadClazz()).isInstanceOf(Class.class);
         assertThat(payloadAnalysis.subject().getName()).isEqualTo("subject");
         assertThat(payloadAnalysis.roles().getName()).isEqualTo("roles");
         assertThat(payloadAnalysis.additionalClaims().stream().map(Field::getName))

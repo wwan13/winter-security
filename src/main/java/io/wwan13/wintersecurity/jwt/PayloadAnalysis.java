@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public record PayloadAnalysis(
+        Class<? extends Payload> payloadClazz,
         Field subject,
         Field roles,
         Set<Field> additionalClaims
