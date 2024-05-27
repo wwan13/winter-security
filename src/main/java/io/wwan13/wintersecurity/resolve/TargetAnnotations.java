@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.config;
+package io.wwan13.wintersecurity.resolve;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
-import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
-public interface WebSecurityConfigurer {
-
-    void registerAuthPatterns(AuthorizedRequestRegistry registry);
-
-    void configureJwt(JwtPropertiesRegistry registry);
-
-    void registerResolveTargets(TargetAnnotationsRegistry registry);
+public record TargetAnnotations(
+        Set<Class<? extends Annotation>> forSubject,
+        Set<Class<? extends Annotation>> forRoles,
+        Set<Class<? extends Annotation>> forClaims,
+        Set<Class<? extends Annotation>> forClaim,
+        Set<Class<? extends Annotation>> forPayload
+) {
 }

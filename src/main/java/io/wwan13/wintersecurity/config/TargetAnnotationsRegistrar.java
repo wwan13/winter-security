@@ -16,15 +16,23 @@
 
 package io.wwan13.wintersecurity.config;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
+import io.wwan13.wintersecurity.resolve.TargetAnnotations;
+import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsApplier;
 import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
+import org.springframework.context.annotation.Bean;
 
-public interface WebSecurityConfigurer {
+public class TargetAnnotationsRegistrar {
 
-    void registerAuthPatterns(AuthorizedRequestRegistry registry);
+    private final WebSecurityConfigurer webSecurityConfigurer;
 
-    void configureJwt(JwtPropertiesRegistry registry);
+    public TargetAnnotationsRegistrar(WebSecurityConfigurer webSecurityConfigurer) {
+        this.webSecurityConfigurer = webSecurityConfigurer;
+    }
 
-    void registerResolveTargets(TargetAnnotationsRegistry registry);
+    @Bean
+    public TargetAnnotations targetAnnotations() {
+        TargetAnnotationsRegistry registry = new TargetAnnotationsRegistry();
+        webSecurityConfigurer.registerResolveTargets(registry);
+        return TargetAnnotationsApplier.apply(registry);
+    }
 }

@@ -29,7 +29,8 @@ import java.lang.annotation.*;
         AuthProcessorRegistrar.class,
         JwtPropertiesRegistrar.class,
         JwtConfiguration.class,
-        PasswordEncoderConfiguration.class
+        PasswordEncoderConfiguration.class,
+        TargetAnnotationsRegistrar.class
 })
 public @interface EnableWebSecurity {
 }
