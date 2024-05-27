@@ -21,6 +21,9 @@ import io.wwan13.wintersecurity.config.EnableWebSecurity;
 import io.wwan13.wintersecurity.config.WebSecurityConfigurer;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
+import io.wwan13.wintersecurity.resolve.RequestUserId;
+import io.wwan13.wintersecurity.resolve.RequestUserRoles;
+import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
 import org.springframework.boot.test.context.TestConfiguration;
 
 @TestConfiguration
@@ -45,5 +48,12 @@ public class TestContextConfig implements WebSecurityConfigurer {
                 .refreshTokenValidity(1000L)
                 .payloadClazz(DefaultPayload.class)
                 .subjectClazz(long.class);
+    }
+
+    @Override
+    public void registerResolveTargets(TargetAnnotationsRegistry registry) {
+        registry
+                .addSubjectResolveAnnotation(RequestUserId.class)
+                .addRolesResolveAnnotation(RequestUserRoles.class);
     }
 }
