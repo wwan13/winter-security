@@ -23,6 +23,9 @@ import io.wwan13.wintersecurity.exception.forbidden.ForbiddenException;
 import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
 import org.springframework.http.HttpMethod;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class HttpRequestAccessManager implements RequestAccessManager {
 
     private final AuthorizedRequest authorizedRequest;
@@ -31,14 +34,18 @@ public class HttpRequestAccessManager implements RequestAccessManager {
         this.authorizedRequest = authorizedRequest;
     }
 
-    public void manageWithAuthentication(HttpMethod method, String uri, String role) {
-        if (!authorizedRequest.isAccessibleRequest(method, uri, role)) {
+    public void manageWithAuthentication(
+            HttpMethod method,
+            String uri,
+            Set<String> roles
+    ) {
+        if (!authorizedRequest.isAccessibleRequest(method, uri, roles)) {
             throw new ForbiddenException();
         }
     }
 
     public void manageWithoutAuthentication(HttpMethod method, String uri) {
-        String role = DefaultAuthPattern.ANONYMOUS_ROLE;
+        Set<String> role = Collections.singleton(DefaultAuthPattern.ANONYMOUS_ROLE);
 
         if (!authorizedRequest.isAccessibleRequest(method, uri, role)) {
             throw new UnauthorizedException();

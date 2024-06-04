@@ -18,9 +18,11 @@ package io.wwan13.wintersecurity.auth;
 
 import org.springframework.http.HttpMethod;
 
+import java.util.Set;
+
 public interface RequestAccessManager {
 
-    void manageWithAuthentication(HttpMethod method, String uri, String role);
+    void manageWithAuthentication(HttpMethod method, String uri, Set<String> roles);
 
     void manageWithoutAuthentication(HttpMethod method, String uri);
 }

@@ -55,7 +55,7 @@ class PermissionsTest extends UnitTest {
         Permissions permissions = new Permissions(roles);
 
         // when
-        boolean result = permissions.canAccess(enteredRole);
+        boolean result = permissions.canAccess(Set.of(enteredRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -72,7 +72,7 @@ class PermissionsTest extends UnitTest {
         Permissions permissions = new Permissions(roles);
 
         // when
-        boolean result = permissions.canAccess(enteredRole);
+        boolean result = permissions.canAccess(Set.of(enteredRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -89,7 +89,7 @@ class PermissionsTest extends UnitTest {
         Permissions permissions = new Permissions(roles);
 
         // when
-        boolean result = permissions.canAccess(enteredRole);
+        boolean result = permissions.canAccess(Set.of(enteredRole));
 
         // then
         assertThat(result).isEqualTo(expected);

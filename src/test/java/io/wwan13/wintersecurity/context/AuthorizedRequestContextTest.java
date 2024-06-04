@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({TestContextConfig.class})
@@ -46,7 +48,7 @@ public class AuthorizedRequestContextTest extends ContextTest {
     ) {
         // given, when
         boolean result = authorizedRequest
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, requestRole);
+                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);
