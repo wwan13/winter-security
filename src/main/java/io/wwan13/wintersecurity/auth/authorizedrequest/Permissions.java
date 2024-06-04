@@ -18,28 +18,34 @@ package io.wwan13.wintersecurity.auth.authorizedrequest;
 
 import io.wwan13.wintersecurity.constant.DefaultAuthPattern;
 
+import java.util.Optional;
 import java.util.Set;
 
 public record Permissions(
         Set<String> roles
 ) {
 
-    public boolean canAccess(String enteredRole) {
+    public boolean canAccess(Set<String> enteredRoles) {
         return roles.stream()
                 .anyMatch(role -> checkPermitAll(role) ||
-                        checkAuthenticated(role, enteredRole) || hasRole(role, enteredRole));
+                        checkAuthenticated(role, enteredRoles) || hasRole(role, enteredRoles));
     }
 
     private boolean checkPermitAll(String registeredRole) {
         return registeredRole.equals(DefaultAuthPattern.PERMIT_ALL);
     }
 
-    private boolean checkAuthenticated(String registeredRole, String enteredRole) {
+    private boolean checkAuthenticated(String registeredRole, Set<String> enteredRoles) {
+        Optional<String> anonymousRole = enteredRoles.stream()
+                .filter(DefaultAuthPattern.ANONYMOUS_ROLE::equals)
+                .findAny();
+
         return registeredRole.equals(DefaultAuthPattern.AUTHENTICATED) &&
-                !enteredRole.equals(DefaultAuthPattern.ANONYMOUS_ROLE);
+                anonymousRole.isEmpty();
     }
 
-    private boolean hasRole(String registeredRole, String enteredRole) {
-        return registeredRole.equals(enteredRole);
+    private boolean hasRole(String registeredRole, Set<String> enteredRoles) {
+        return enteredRoles.stream()
+                .anyMatch(registeredRole::equals);
     }
 }

@@ -19,18 +19,23 @@ package io.wwan13.wintersecurity.auth.authorizedrequest;
 import org.springframework.http.HttpMethod;
 
 import java.util.Map;
+import java.util.Set;
 
 public record AuthorizedRequest(
         Map<Requests, Permissions> registered,
         boolean isElseRequestPermit
 ) {
 
-    public boolean isAccessibleRequest(HttpMethod httpMethod, String requestUri, String role) {
+    public boolean isAccessibleRequest(
+            HttpMethod httpMethod,
+            String requestUri,
+            Set<String> roles
+    ) {
         return registered.keySet().stream()
                 .filter(requests -> requests.isRegistered(httpMethod, requestUri))
                 .map(registered::get)
                 .findFirst()
-                .map(permissions -> permissions.canAccess(role))
+                .map(permissions -> permissions.canAccess(roles))
                 .orElse(isElseRequestPermit);
     }
 }

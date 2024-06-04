@@ -23,6 +23,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.HttpMethod;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -74,7 +76,7 @@ class AuthorizedRequestTest extends UnitTest {
 
         // when
         boolean result = authorizedRequest
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, requestRole);
+                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -107,7 +109,7 @@ class AuthorizedRequestTest extends UnitTest {
 
         // when
         boolean result = authorizedRequest
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, requestRole);
+                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -141,7 +143,7 @@ class AuthorizedRequestTest extends UnitTest {
 
         // when
         boolean result = authorizedRequest
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, requestRole);
+                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);

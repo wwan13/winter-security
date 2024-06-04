@@ -25,6 +25,8 @@ import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -52,7 +54,7 @@ class HttpRequestAccessManagerTest extends UnitTest {
 
         // when, then
         assertThatNoException()
-                .isThrownBy(() -> accessManager.manageWithAuthentication(method, uri, role));
+                .isThrownBy(() -> accessManager.manageWithAuthentication(method, uri, Set.of(role)));
     }
 
     @Test
@@ -63,7 +65,7 @@ class HttpRequestAccessManagerTest extends UnitTest {
         final String role = "ROLE_ADMIN";
 
         // when, then
-        assertThatThrownBy(() -> accessManager.manageWithAuthentication(method, uri, role))
+        assertThatThrownBy(() -> accessManager.manageWithAuthentication(method, uri, Set.of(role)))
                 .isInstanceOf(ForbiddenException.class);
     }
 
