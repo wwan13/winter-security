@@ -14,30 +14,32 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest.support;
+package io.wwan13.wintersecurity.auth.authpattern.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AuthorizedRequestApplierTest extends UnitTest {
+class AuthPatternsRegistryTest extends UnitTest {
 
     @Test
-    void should_CreateAuthorizedRequest_when_RegistryEntered() {
+    void should_CreateAuthorizedRequest_when_UsingRegistry() {
         // given
-        final AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
-        registry
-                .uriPatterns("/api/test")
-                .allHttpMethods()
-                .permitAll()
-                .elseRequestPermit();
+        final String uriPattern = "/api/test/**";
+        final HttpMethod httpMethod = HttpMethod.POST;
+        final String role = "role";
 
         // when
-        AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(registry);
+        AuthPatterns authPatterns = AuthPatternsRegistry.of()
+                .uriPatterns(uriPattern)
+                .httpMethods(httpMethod)
+                .hasRoles(role)
+                .apply();
 
         // then
-        assertThat(authorizedRequest).isInstanceOf(AuthorizedRequest.class);
+        assertThat(authPatterns).isInstanceOf(AuthPatterns.class);
     }
 }

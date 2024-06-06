@@ -19,9 +19,9 @@ package io.wwan13.wintersecurity.auth.processor;
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.auth.AuthTestContainer;
 import io.wwan13.wintersecurity.auth.RequestAccessManager;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestApplier;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsApplier;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import io.wwan13.wintersecurity.auth.provider.HttpRequestAccessManager;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletRequest;
 import io.wwan13.wintersecurity.exception.forbidden.ForbiddenException;
@@ -37,8 +37,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class InterceptorAuthProcessorTest extends UnitTest {
 
-    static AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(
-            AuthorizedRequestRegistry.of()
+    static AuthPatterns authPatterns = AuthPatternsApplier.apply(
+            AuthPatternsRegistry.of()
                     .uriPatterns("/api/user")
                     .httpMethods(HttpMethod.POST, HttpMethod.GET)
                     .hasRoles("ROLE_USER")
@@ -52,7 +52,7 @@ class InterceptorAuthProcessorTest extends UnitTest {
                     .permitAll()
     );
 
-    static RequestAccessManager accessManager = new HttpRequestAccessManager(authorizedRequest);
+    static RequestAccessManager accessManager = new HttpRequestAccessManager(authPatterns);
 
     static InterceptorAuthProcessor interceptorAuthProcessor = new InterceptorAuthProcessor(
             AuthTestContainer.tokenExtractor,

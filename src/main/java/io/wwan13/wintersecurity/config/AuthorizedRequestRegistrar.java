@@ -16,10 +16,9 @@
 
 package io.wwan13.wintersecurity.config;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestApplier;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsApplier;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import org.springframework.context.annotation.Bean;
 
 public class AuthorizedRequestRegistrar {
@@ -31,9 +30,9 @@ public class AuthorizedRequestRegistrar {
     }
 
     @Bean
-    public AuthorizedRequest authorizedRequest() {
-        AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
+    public AuthPatterns authorizedRequest() {
+        AuthPatternsRegistry registry = AuthPatternsRegistry.of();
         secureRequestConfigurer.registerAuthPatterns(registry);
-        return AuthorizedRequestApplier.apply(registry);
+        return AuthPatternsApplier.apply(registry);
     }
 }

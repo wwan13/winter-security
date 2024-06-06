@@ -18,7 +18,7 @@ package io.wwan13.wintersecurity.config;
 
 import io.wwan13.wintersecurity.auth.RequestAccessManager;
 import io.wwan13.wintersecurity.auth.TokenExtractor;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
 import io.wwan13.wintersecurity.auth.processor.AbstractInterceptorAuthProcessor;
 import io.wwan13.wintersecurity.auth.processor.InterceptorAuthProcessor;
 import io.wwan13.wintersecurity.auth.provider.BearerTokenExtractor;
@@ -45,8 +45,8 @@ public class AuthConfiguration {
     }
 
     @Bean
-    public RequestAccessManager requestAccessManager(AuthorizedRequest authorizedRequest) {
-        return new HttpRequestAccessManager(authorizedRequest);
+    public RequestAccessManager requestAccessManager(AuthPatterns authPatterns) {
+        return new HttpRequestAccessManager(authPatterns);
     }
 
     @Bean

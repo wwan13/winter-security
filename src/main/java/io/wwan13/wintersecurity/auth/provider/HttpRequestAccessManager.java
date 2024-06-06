@@ -17,7 +17,7 @@
 package io.wwan13.wintersecurity.auth.provider;
 
 import io.wwan13.wintersecurity.auth.RequestAccessManager;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
 import io.wwan13.wintersecurity.constant.DefaultAuthPattern;
 import io.wwan13.wintersecurity.exception.forbidden.ForbiddenException;
 import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
@@ -28,10 +28,10 @@ import java.util.Set;
 
 public class HttpRequestAccessManager implements RequestAccessManager {
 
-    private final AuthorizedRequest authorizedRequest;
+    private final AuthPatterns authPatterns;
 
-    public HttpRequestAccessManager(AuthorizedRequest authorizedRequest) {
-        this.authorizedRequest = authorizedRequest;
+    public HttpRequestAccessManager(AuthPatterns authPatterns) {
+        this.authPatterns = authPatterns;
     }
 
     public void manageWithAuthentication(
@@ -39,7 +39,7 @@ public class HttpRequestAccessManager implements RequestAccessManager {
             String uri,
             Set<String> roles
     ) {
-        if (!authorizedRequest.isAccessibleRequest(method, uri, roles)) {
+        if (!authPatterns.isAccessibleRequest(method, uri, roles)) {
             throw new ForbiddenException();
         }
     }
@@ -47,7 +47,7 @@ public class HttpRequestAccessManager implements RequestAccessManager {
     public void manageWithoutAuthentication(HttpMethod method, String uri) {
         Set<String> role = Collections.singleton(DefaultAuthPattern.ANONYMOUS_ROLE);
 
-        if (!authorizedRequest.isAccessibleRequest(method, uri, role)) {
+        if (!authPatterns.isAccessibleRequest(method, uri, role)) {
             throw new UnauthorizedException();
         }
     }
