@@ -16,7 +16,7 @@
 
 package io.wwan13.wintersecurity.context.securerequest;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import io.wwan13.wintersecurity.config.EnableSecureRequest;
 import io.wwan13.wintersecurity.config.SecureRequestConfigurer;
 import io.wwan13.wintersecurity.resolve.RequestUserId;
@@ -36,7 +36,7 @@ public class SecureRequestTestConfig implements SecureRequestConfigurer {
     }
 
     @Override
-    public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
+    public void registerAuthPatterns(AuthPatternsRegistry registry) {
         registry
                 .uriPatterns("/api/test/**")
                 .allHttpMethods()

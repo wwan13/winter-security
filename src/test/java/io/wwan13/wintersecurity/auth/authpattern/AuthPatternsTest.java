@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest;
+package io.wwan13.wintersecurity.auth.authpattern;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestApplier;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsApplier;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.HttpMethod;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-class AuthorizedRequestTest extends UnitTest {
+class AuthPatternsTest extends UnitTest {
 
     @ParameterizedTest
     @CsvSource({
@@ -48,7 +48,7 @@ class AuthorizedRequestTest extends UnitTest {
             final boolean expected
     ) {
         // given
-        AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
+        AuthPatternsRegistry registry = AuthPatternsRegistry.of();
         registry
                 .uriPatterns("/api/admin/**")
                 .httpMethods(GET, POST)
@@ -72,10 +72,10 @@ class AuthorizedRequestTest extends UnitTest {
 
                 .elseRequestAuthenticated();
 
-        AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(registry);
+        AuthPatterns authPatterns = AuthPatternsApplier.apply(registry);
 
         // when
-        boolean result = authorizedRequest
+        boolean result = authPatterns
                 .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
@@ -97,7 +97,7 @@ class AuthorizedRequestTest extends UnitTest {
             final boolean expected
     ) {
         // given
-        AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
+        AuthPatternsRegistry registry = AuthPatternsRegistry.of();
         registry
                 .uriPatterns("/api/test")
                 .httpMethods(GET)
@@ -105,10 +105,10 @@ class AuthorizedRequestTest extends UnitTest {
 
                 .elseRequestPermit();
 
-        AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(registry);
+        AuthPatterns authPatterns = AuthPatternsApplier.apply(registry);
 
         // when
-        boolean result = authorizedRequest
+        boolean result = authPatterns
                 .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then
@@ -131,7 +131,7 @@ class AuthorizedRequestTest extends UnitTest {
             final boolean expected
     ) {
         // given
-        AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
+        AuthPatternsRegistry registry = AuthPatternsRegistry.of();
         registry
                 .uriPatterns("/api/test")
                 .httpMethods(GET)
@@ -139,10 +139,10 @@ class AuthorizedRequestTest extends UnitTest {
 
                 .elseRequestAuthenticated();
 
-        AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(registry);
+        AuthPatterns authPatterns = AuthPatternsApplier.apply(registry);
 
         // when
-        boolean result = authorizedRequest
+        boolean result = authPatterns
                 .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
 
         // then

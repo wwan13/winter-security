@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest;
+package io.wwan13.wintersecurity.auth.authpattern;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.util.AntPathMatcher;
 
-import java.util.Map;
 import java.util.Set;
 
-public record AuthorizedRequest(
-        Map<Requests, Permissions> registered,
-        boolean isElseRequestPermit
+public record Requests(
+        Set<HttpMethod> methods,
+        String uriPattern
 ) {
 
-    public boolean isAccessibleRequest(
-            HttpMethod httpMethod,
-            String requestUri,
-            Set<String> roles
-    ) {
-        return registered.keySet().stream()
-                .filter(requests -> requests.isRegistered(httpMethod, requestUri))
-                .map(registered::get)
-                .findFirst()
-                .map(permissions -> permissions.canAccess(roles))
-                .orElse(isElseRequestPermit);
+    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+    public boolean isRegistered(HttpMethod httpMethod, String requestUri) {
+        return antPathMatcher.match(uriPattern, requestUri) &&
+                methods.contains(httpMethod);
     }
 }

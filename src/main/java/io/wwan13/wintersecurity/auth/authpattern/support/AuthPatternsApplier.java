@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest;
+package io.wwan13.wintersecurity.auth.authpattern.support;
 
-import org.springframework.http.HttpMethod;
-import org.springframework.util.AntPathMatcher;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
 
-import java.util.Set;
+public class AuthPatternsApplier {
 
-public record Requests(
-        Set<HttpMethod> methods,
-        String uriPattern
-) {
+    private AuthPatternsApplier() {
+        throw new IllegalStateException("Cannot instantiate a utility class!");
+    }
 
-    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
-
-    public boolean isRegistered(HttpMethod httpMethod, String requestUri) {
-        return antPathMatcher.match(uriPattern, requestUri) &&
-                methods.contains(httpMethod);
+    public static AuthPatterns apply(AuthPatternsRegistry registry) {
+        return registry.apply();
     }
 }

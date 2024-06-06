@@ -16,7 +16,7 @@
 
 package io.wwan13.wintersecurity.context.allconfigures;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import io.wwan13.wintersecurity.config.EnableJwtProvider;
 import io.wwan13.wintersecurity.config.EnableSecureRequest;
 import io.wwan13.wintersecurity.config.JwtProviderConfigurer;
@@ -48,7 +48,7 @@ public class AllConfiguresTestConfigure
     }
 
     @Override
-    public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
+    public void registerAuthPatterns(AuthPatternsRegistry registry) {
         registry
                 .uriPatterns("/api/test/**")
                 .allHttpMethods()

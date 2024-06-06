@@ -17,9 +17,9 @@
 package io.wwan13.wintersecurity.auth.provider;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestApplier;
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsApplier;
+import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import io.wwan13.wintersecurity.exception.forbidden.ForbiddenException;
 import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class HttpRequestAccessManagerTest extends UnitTest {
 
-    static AuthorizedRequest authorizedRequest = AuthorizedRequestApplier.apply(
-            AuthorizedRequestRegistry.of()
+    static AuthPatterns authPatterns = AuthPatternsApplier.apply(
+            AuthPatternsRegistry.of()
                     .uriPatterns("/api/test")
                     .httpMethods(HttpMethod.POST, HttpMethod.GET)
                     .hasRoles("ROLE_USER")
@@ -43,7 +43,7 @@ class HttpRequestAccessManagerTest extends UnitTest {
                     .permitAll()
     );
 
-    static HttpRequestAccessManager accessManager = new HttpRequestAccessManager(authorizedRequest);
+    static HttpRequestAccessManager accessManager = new HttpRequestAccessManager(authPatterns);
 
     @Test
     void should_PassWithoutException_when_ValidRequestEnteredWithAuthentication() {

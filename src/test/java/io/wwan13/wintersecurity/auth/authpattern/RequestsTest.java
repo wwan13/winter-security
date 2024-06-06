@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest;
+package io.wwan13.wintersecurity.auth.authpattern;
 
 import io.wwan13.wintersecurity.UnitTest;
 import org.junit.jupiter.api.Test;

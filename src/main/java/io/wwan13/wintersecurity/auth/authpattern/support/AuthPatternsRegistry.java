@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.auth.authorizedrequest.support;
+package io.wwan13.wintersecurity.auth.authpattern.support;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.Permissions;
-import io.wwan13.wintersecurity.auth.authorizedrequest.AuthorizedRequest;
-import io.wwan13.wintersecurity.auth.authorizedrequest.Requests;
+import io.wwan13.wintersecurity.auth.authpattern.Permissions;
+import io.wwan13.wintersecurity.auth.authpattern.AuthPatterns;
+import io.wwan13.wintersecurity.auth.authpattern.Requests;
 import io.wwan13.wintersecurity.constant.RegistryOptions;
 import org.springframework.http.HttpMethod;
 
@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AuthorizedRequestRegistry {
+public class AuthPatternsRegistry {
 
     private final Map<Requests, Permissions> registered;
     private boolean isElseRequestPermit;
 
-    public AuthorizedRequestRegistry(
+    public AuthPatternsRegistry(
             Map<Requests, Permissions> registered,
             boolean isElseRequestPermit
     ) {
@@ -40,8 +40,8 @@ public class AuthorizedRequestRegistry {
         this.isElseRequestPermit = isElseRequestPermit;
     }
 
-    public static AuthorizedRequestRegistry of() {
-        return new AuthorizedRequestRegistry(
+    public static AuthPatternsRegistry of() {
+        return new AuthPatternsRegistry(
                 new LinkedHashMap<>(),
                 RegistryOptions.DEFAULT_ELSE_REQUEST_OPTION
         );
@@ -59,16 +59,16 @@ public class AuthorizedRequestRegistry {
         this.isElseRequestPermit = false;
     }
 
-    protected AuthorizedRequest apply() {
-        return new AuthorizedRequest(registered, isElseRequestPermit);
+    protected AuthPatterns apply() {
+        return new AuthPatterns(registered, isElseRequestPermit);
     }
 
     public static class HttpMethodAppender {
 
-        private final AuthorizedRequestRegistry registry;
+        private final AuthPatternsRegistry registry;
         private final Set<String> uriPatterns;
 
-        HttpMethodAppender(AuthorizedRequestRegistry registry, Set<String> uriPatterns) {
+        HttpMethodAppender(AuthPatternsRegistry registry, Set<String> uriPatterns) {
             this.registry = registry;
             this.uriPatterns = uriPatterns;
         }
@@ -104,12 +104,12 @@ public class AuthorizedRequestRegistry {
 
     public static class RolesAppender {
 
-        private final AuthorizedRequestRegistry registry;
+        private final AuthPatternsRegistry registry;
         private final Set<String> uriPatterns;
         private final Set<HttpMethod> httpMethods;
 
         RolesAppender(
-                AuthorizedRequestRegistry registry,
+                AuthPatternsRegistry registry,
                 Set<String> uriPatterns,
                 Set<HttpMethod> httpMethods
         ) {
@@ -118,17 +118,17 @@ public class AuthorizedRequestRegistry {
             this.httpMethods = httpMethods;
         }
 
-        public AuthorizedRequestRegistry permitAll() {
+        public AuthPatternsRegistry permitAll() {
             appendRolesPerPattern(RegistryOptions.ALL_ROLES);
             return registry;
         }
 
-        public AuthorizedRequestRegistry authenticated() {
+        public AuthPatternsRegistry authenticated() {
             appendRolesPerPattern(RegistryOptions.EMPTY_ROLES);
             return registry;
         }
 
-        public AuthorizedRequestRegistry hasRoles(Object... roles) {
+        public AuthPatternsRegistry hasRoles(Object... roles) {
             appendRolesPerPattern(Set.of(roles));
             return registry;
         }
