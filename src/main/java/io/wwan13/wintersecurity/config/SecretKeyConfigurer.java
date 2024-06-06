@@ -16,15 +16,9 @@
 
 package io.wwan13.wintersecurity.config;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
-import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
+import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
 
-public interface WebSecurityConfigurer {
+public interface SecretKeyConfigurer {
 
-    void registerAuthPatterns(AuthorizedRequestRegistry registry);
-
-    void configureJwt(JwtPropertiesRegistry registry);
-
-    void registerResolveTargets(TargetAnnotationsRegistry registry);
+    void configureSecretKey(SecretKeyRegistry registry);
 }

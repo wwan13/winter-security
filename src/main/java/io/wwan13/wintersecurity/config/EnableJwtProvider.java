@@ -16,14 +16,21 @@
 
 package io.wwan13.wintersecurity.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.Import;
 
-public class PasswordEncoderConfiguration {
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Import({
+        JwtPropertiesRegistrar.class,
+        JwtConfiguration.class,
+        SecretKeyRegistrar.class
+})
+public @interface EnableJwtProvider {
 }

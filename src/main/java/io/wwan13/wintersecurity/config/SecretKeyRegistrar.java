@@ -16,21 +16,23 @@
 
 package io.wwan13.wintersecurity.config;
 
-import org.springframework.context.annotation.Import;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
+import io.wwan13.wintersecurity.secretkey.support.SecretKetApplier;
+import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
+import org.springframework.context.annotation.Bean;
 
-import java.lang.annotation.*;
+public class SecretKeyRegistrar {
 
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-@Import({
-        AuthorizedRequestRegistrar.class,
-        AuthConfiguration.class,
-        AuthProcessorRegistrar.class,
-        JwtPropertiesRegistrar.class,
-        JwtConfiguration.class,
-        PasswordEncoderConfiguration.class,
-        TargetAnnotationsRegistrar.class
-})
-public @interface EnableWebSecurity {
+    private final SecretKeyConfigurer configurer;
+
+    public SecretKeyRegistrar(SecretKeyConfigurer configurer) {
+        this.configurer = configurer;
+    }
+
+    @Bean
+    public SecretKey secretKey() {
+        SecretKeyRegistry registry = new SecretKeyRegistry();
+        configurer.configureSecretKey(registry);
+        return SecretKetApplier.apply(registry);
+    }
 }
