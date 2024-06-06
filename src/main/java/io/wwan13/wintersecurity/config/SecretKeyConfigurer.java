@@ -16,14 +16,9 @@
 
 package io.wwan13.wintersecurity.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
 
-public class PasswordEncoderConfiguration {
+public interface SecretKeyConfigurer {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    void configureSecretKey(SecretKeyRegistry registry);
 }

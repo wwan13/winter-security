@@ -26,34 +26,33 @@ import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
 import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 import org.springframework.context.annotation.Bean;
 
 public class JwtConfiguration {
 
-    private final JwtProperties jwtProperties;
-
-    public JwtConfiguration(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
+    @Bean
+    public TokenGenerator tokenGenerator(
+            SecretKey secretKey,
+            JwtProperties jwtProperties,
+            PayloadParser payloadParser
+    ) {
+        return new JwtTokenGenerator(secretKey, jwtProperties, payloadParser);
     }
 
     @Bean
-    public TokenGenerator tokenGenerator() {
-        return new JwtTokenGenerator(jwtProperties, payloadParser());
+    public TokenDecoder tokenDecoder(SecretKey secretKey) {
+        return new JwtTokenDecoder(secretKey);
     }
 
     @Bean
-    public TokenDecoder tokenDecoder() {
-        return new JwtTokenDecoder(jwtProperties);
-    }
-
-    @Bean
-    public PayloadAnalysis payloadAnalysis() {
+    public PayloadAnalysis payloadAnalysis(JwtProperties jwtProperties) {
         PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
         return payloadAnalyst.analyze(jwtProperties);
     }
 
     @Bean
-    public PayloadParser payloadParser() {
-        return new JwtPayloadParser(payloadAnalysis());
+    public PayloadParser payloadParser(PayloadAnalysis payloadAnalysis) {
+        return new JwtPayloadParser(payloadAnalysis);
     }
 }

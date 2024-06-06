@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.config;
+package io.wwan13.wintersecurity.secretkey.support;
 
-import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
-import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 
-public interface WebSecurityConfigurer {
+public class SecretKetApplier {
 
-    void registerAuthPatterns(AuthorizedRequestRegistry registry);
+    private SecretKetApplier() {
+        throw new IllegalStateException("Cannot instantiate a utility class!");
+    }
 
-    void configureJwt(JwtPropertiesRegistry registry);
-
-    void registerResolveTargets(TargetAnnotationsRegistry registry);
+    public static SecretKey apply(SecretKeyRegistry registry) {
+        return registry.apply();
+    }
 }

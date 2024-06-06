@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt;
+package io.wwan13.wintersecurity.config;
 
-public record JwtProperties(
-        long accessTokenValidity,
-        long refreshTokenValidity,
-        Class<? extends Payload> payloadClazz,
-        Class<?> subjectClazz
-) {
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Import({
+        AuthorizedRequestRegistrar.class,
+        AuthConfiguration.class,
+        AuthProcessorRegistrar.class,
+        TargetAnnotationsRegistrar.class,
+        SecretKeyRegistrar.class
+})
+public @interface EnableSecureRequest {
 }

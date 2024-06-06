@@ -14,21 +14,38 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.context.config;
+package io.wwan13.wintersecurity.context.allconfigures;
 
 import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
-import io.wwan13.wintersecurity.config.EnableWebSecurity;
-import io.wwan13.wintersecurity.config.WebSecurityConfigurer;
-import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
+import io.wwan13.wintersecurity.config.EnableJwtProvider;
+import io.wwan13.wintersecurity.config.EnableSecureRequest;
+import io.wwan13.wintersecurity.config.JwtProviderConfigurer;
+import io.wwan13.wintersecurity.config.SecureRequestConfigurer;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import io.wwan13.wintersecurity.resolve.RequestUserId;
 import io.wwan13.wintersecurity.resolve.RequestUserRoles;
 import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
+import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
 import org.springframework.boot.test.context.TestConfiguration;
 
 @TestConfiguration
-@EnableWebSecurity
-public class TestContextConfig implements WebSecurityConfigurer {
+@EnableJwtProvider
+@EnableSecureRequest
+public class AllConfiguresTestConfigure
+        implements JwtProviderConfigurer, SecureRequestConfigurer {
+
+    @Override
+    public void configureJwt(JwtPropertiesRegistry registry) {
+        registry
+                .accessTokenValidity(100000000000L)
+                .refreshTokenValidity(100000000000L);
+    }
+
+    @Override
+    public void configureSecretKey(SecretKeyRegistry registry) {
+        registry
+                .secretKey("asdfghjklqwertyuiopzxcvbnmasddfgwerasf");
+    }
 
     @Override
     public void registerAuthPatterns(AuthorizedRequestRegistry registry) {
@@ -41,17 +58,7 @@ public class TestContextConfig implements WebSecurityConfigurer {
     }
 
     @Override
-    public void configureJwt(JwtPropertiesRegistry registry) {
-        registry
-                .secretKey("secretkey123123123123123123123123123123123123123123123123")
-                .accessTokenValidity(1000L)
-                .refreshTokenValidity(1000L)
-                .payloadClazz(DefaultPayload.class)
-                .subjectClazz(long.class);
-    }
-
-    @Override
-    public void registerResolveTargets(TargetAnnotationsRegistry registry) {
+    public void registerTargetAnnotations(TargetAnnotationsRegistry registry) {
         registry
                 .addSubjectResolveAnnotation(RequestUserId.class)
                 .addRolesResolveAnnotation(RequestUserRoles.class);

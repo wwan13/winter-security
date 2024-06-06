@@ -16,23 +16,23 @@
 
 package io.wwan13.wintersecurity.config;
 
-import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
+import io.wwan13.wintersecurity.secretkey.support.SecretKetApplier;
+import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
 import org.springframework.context.annotation.Bean;
 
-public class JwtPropertiesRegistrar {
+public class SecretKeyRegistrar {
 
-    private final JwtProviderConfigurer jwtProviderConfigurer;
+    private final SecretKeyConfigurer configurer;
 
-    public JwtPropertiesRegistrar(JwtProviderConfigurer jwtProviderConfigurer) {
-        this.jwtProviderConfigurer = jwtProviderConfigurer;
+    public SecretKeyRegistrar(SecretKeyConfigurer configurer) {
+        this.configurer = configurer;
     }
 
     @Bean
-    public JwtProperties jwtProperties() {
-        JwtPropertiesRegistry registry = new JwtPropertiesRegistry();
-        jwtProviderConfigurer.configureJwt(registry);
-        return JwtPropertiesApplier.apply(registry);
+    public SecretKey secretKey() {
+        SecretKeyRegistry registry = new SecretKeyRegistry();
+        configurer.configureSecretKey(registry);
+        return SecretKetApplier.apply(registry);
     }
 }

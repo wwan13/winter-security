@@ -24,9 +24,20 @@ import io.wwan13.wintersecurity.auth.processor.InterceptorAuthProcessor;
 import io.wwan13.wintersecurity.auth.provider.BearerTokenExtractor;
 import io.wwan13.wintersecurity.auth.provider.HttpRequestAccessManager;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
+import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AuthConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(TokenDecoder.class)
+    public TokenDecoder tokenDecoder(SecretKey secretKey) {
+        return new JwtTokenDecoder(secretKey);
+    }
 
     @Bean
     public TokenExtractor tokenExtractor() {
@@ -49,5 +60,10 @@ public class AuthConfiguration {
                 tokenDecoder,
                 requestAccessManager
         );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

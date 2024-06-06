@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt;
+package io.wwan13.wintersecurity.secretkey;
 
-public record JwtProperties(
-        long accessTokenValidity,
-        long refreshTokenValidity,
-        Class<? extends Payload> payloadClazz,
-        Class<?> subjectClazz
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+
+public record SecretKey(
+        Key value
 ) {
+
+    public static SecretKey of(String secretKey) {
+        return new SecretKey(Keys.hmacShaKeyFor(secretKey.getBytes()));
+    }
 }

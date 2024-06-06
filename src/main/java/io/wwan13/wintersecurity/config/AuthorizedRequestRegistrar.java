@@ -24,16 +24,16 @@ import org.springframework.context.annotation.Bean;
 
 public class AuthorizedRequestRegistrar {
 
-    private final WebSecurityConfigurer webSecurityConfigurer;
+    private final SecureRequestConfigurer secureRequestConfigurer;
 
-    public AuthorizedRequestRegistrar(WebSecurityConfigurer webSecurityConfigurer) {
-        this.webSecurityConfigurer = webSecurityConfigurer;
+    public AuthorizedRequestRegistrar(SecureRequestConfigurer secureRequestConfigurer) {
+        this.secureRequestConfigurer = secureRequestConfigurer;
     }
 
     @Bean
     public AuthorizedRequest authorizedRequest() {
         AuthorizedRequestRegistry registry = AuthorizedRequestRegistry.of();
-        webSecurityConfigurer.registerAuthPatterns(registry);
+        secureRequestConfigurer.registerAuthPatterns(registry);
         return AuthorizedRequestApplier.apply(registry);
     }
 }

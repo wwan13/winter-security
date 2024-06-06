@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt;
+package io.wwan13.wintersecurity.context.securerequest;
 
-public record JwtProperties(
-        long accessTokenValidity,
-        long refreshTokenValidity,
-        Class<? extends Payload> payloadClazz,
-        Class<?> subjectClazz
-) {
+import io.wwan13.wintersecurity.ContextTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
+
+@Import(SecureRequestTestConfig.class)
+public class SecureRequestContextTest extends ContextTest {
+
+    @Test
+    void contextLoad() {
+    }
 }

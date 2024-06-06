@@ -22,16 +22,26 @@ import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 import io.wwan13.wintersecurity.util.DateUtil;
 
-import static io.wwan13.wintersecurity.constant.Constants.*;
+import static io.wwan13.wintersecurity.constant.Constants.PAYLOAD_KEY_TOKEN_TYPE;
+import static io.wwan13.wintersecurity.constant.Constants.PAYLOAD_KEY_USER_ROLE;
+import static io.wwan13.wintersecurity.constant.Constants.TOKEN_TYPE_ACCESS;
+import static io.wwan13.wintersecurity.constant.Constants.TOKEN_TYPE_REFRESH;
 
 public class JwtTokenGenerator implements TokenGenerator {
 
+    private final SecretKey secretKey;
     private final JwtProperties properties;
     private final PayloadParser payloadParser;
 
-    public JwtTokenGenerator(JwtProperties properties, PayloadParser payloadParser) {
+    public JwtTokenGenerator(
+            SecretKey secretKey,
+            JwtProperties properties,
+            PayloadParser payloadParser
+    ) {
+        this.secretKey = secretKey;
         this.properties = properties;
         this.payloadParser = payloadParser;
     }
@@ -46,7 +56,7 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .claim(PAYLOAD_KEY_TOKEN_TYPE, TOKEN_TYPE_ACCESS)
                 .claim(PAYLOAD_KEY_USER_ROLE, RoleSerializer.serialize(payloadParser.asRoles(payload)))
                 .addClaims(payloadParser.asAdditionalClaims(payload))
-                .signWith(properties.key())
+                .signWith(secretKey.value())
                 .compact();
     }
 
@@ -60,7 +70,7 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .claim(PAYLOAD_KEY_TOKEN_TYPE, TOKEN_TYPE_REFRESH)
                 .claim(PAYLOAD_KEY_USER_ROLE, RoleSerializer.serialize(payloadParser.asRoles(payload)))
                 .addClaims(payloadParser.asAdditionalClaims(payload))
-                .signWith(properties.key())
+                .signWith(secretKey.value())
                 .compact();
     }
 

@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.context;
+package io.wwan13.wintersecurity.context.allconfigures;
 
 import io.wwan13.wintersecurity.ContextTest;
-import io.wwan13.wintersecurity.context.config.TestContextConfig;
-import io.wwan13.wintersecurity.resolve.TargetAnnotations;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Import(TestContextConfig.class)
-public class TargetAnnotationsContextTest extends ContextTest {
-
-    @Autowired
-    TargetAnnotations targetAnnotations;
+@Import(AllConfiguresTestConfigure.class)
+public class AllConfiguresContextTest extends ContextTest {
 
     @Test
-    void should_RegisteredInSpringIocWithEnteredValue_when_ContextLoaded() {
-        // given, then, then
-        assertThat(targetAnnotations)
-                .isInstanceOf(TargetAnnotations.class);
+    void contextLoad() {
     }
 }

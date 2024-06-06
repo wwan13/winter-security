@@ -18,7 +18,6 @@ package io.wwan13.wintersecurity.jwt.provider;
 
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
-import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
@@ -26,6 +25,7 @@ import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -72,14 +72,17 @@ class JwtTokenDecoderTest {
     @Test
     void should_ThrowException_when_ExpiredTokenEntered() {
         // given
+        final SecretKey secretKey = SecretKey.of(
+                "secret-key-secret-key-secret-key-secret-key-secret-key-secret-key"
+        );
         final JwtProperties properties = JwtPropertiesApplier.apply(
                 new JwtPropertiesRegistry()
-                        .secretKey("secretsecretsecretsecretsecretsecretsecretsecretsecretsecret")
                         .accessTokenValidity(-1L)
                         .payloadClazz(ProviderTestContainer.TestPayload.class)
         );
-        final TokenGenerator tokenGenerator = new JwtTokenGenerator(properties, ProviderTestContainer.payloadParser);
-        final TokenDecoder tokenDecoder = new JwtTokenDecoder(properties);
+        final TokenGenerator tokenGenerator =
+                new JwtTokenGenerator(secretKey, properties, ProviderTestContainer.payloadParser);
+        final TokenDecoder tokenDecoder = new JwtTokenDecoder(secretKey);
 
         final long id = 1L;
         final String role = "role";

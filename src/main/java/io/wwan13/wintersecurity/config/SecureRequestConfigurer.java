@@ -16,23 +16,12 @@
 
 package io.wwan13.wintersecurity.config;
 
-import io.wwan13.wintersecurity.resolve.TargetAnnotations;
-import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsApplier;
+import io.wwan13.wintersecurity.auth.authorizedrequest.support.AuthorizedRequestRegistry;
 import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
-import org.springframework.context.annotation.Bean;
 
-public class TargetAnnotationsRegistrar {
+public interface SecureRequestConfigurer extends SecretKeyConfigurer {
 
-    private final SecureRequestConfigurer secureRequestConfigurer;
+    void registerAuthPatterns(AuthorizedRequestRegistry registry);
 
-    public TargetAnnotationsRegistrar(SecureRequestConfigurer secureRequestConfigurer) {
-        this.secureRequestConfigurer = secureRequestConfigurer;
-    }
-
-    @Bean
-    public TargetAnnotations targetAnnotations() {
-        TargetAnnotationsRegistry registry = new TargetAnnotationsRegistry();
-        secureRequestConfigurer.registerTargetAnnotations(registry);
-        return TargetAnnotationsApplier.apply(registry);
-    }
+    void registerTargetAnnotations(TargetAnnotationsRegistry registry);
 }
