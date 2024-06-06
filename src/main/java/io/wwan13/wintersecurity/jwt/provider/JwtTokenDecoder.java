@@ -19,17 +19,18 @@ package io.wwan13.wintersecurity.jwt.provider;
 import io.jsonwebtoken.*;
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
-import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 
+import java.security.Key;
 import java.util.Map;
 
 public class JwtTokenDecoder implements TokenDecoder {
 
-    private final JwtProperties jwtProperties;
+    private final SecretKey secretKey;
 
-    public JwtTokenDecoder(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
+    public JwtTokenDecoder(SecretKey secretKey) {
+        this.secretKey = secretKey;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class JwtTokenDecoder implements TokenDecoder {
     public Claims parseClaimsWithExceptionHandling(String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(jwtProperties.key())
+                    .setSigningKey(secretKey.value())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();

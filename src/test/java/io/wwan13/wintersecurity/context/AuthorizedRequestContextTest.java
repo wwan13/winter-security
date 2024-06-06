@@ -29,6 +29,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Import({TestContextConfig.class})
 public class AuthorizedRequestContextTest extends ContextTest {
 

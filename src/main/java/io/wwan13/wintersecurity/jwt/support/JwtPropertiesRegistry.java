@@ -16,26 +16,22 @@
 
 package io.wwan13.wintersecurity.jwt.support;
 
-import io.jsonwebtoken.security.Keys;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.Payload;
 
 import java.util.Objects;
 
-import static io.wwan13.wintersecurity.constant.Constants.*;
+import static io.wwan13.wintersecurity.constant.Constants.DEFAULT_ACCESS_TOKEN_VALIDITY;
+import static io.wwan13.wintersecurity.constant.Constants.DEFAULT_PAYLOAD_CLAZZ;
+import static io.wwan13.wintersecurity.constant.Constants.DEFAULT_REFRESH_TOKEN_VALIDITY;
+import static io.wwan13.wintersecurity.constant.Constants.DEFAULT_SUBJECT_CLAZZ;
 
 public class JwtPropertiesRegistry {
 
-    private String secretKey;
     private long accessTokenValidity;
     private long refreshTokenValidity;
     private Class<? extends Payload> payloadClazz;
     private Class<?> subjectClazz;
-
-    public JwtPropertiesRegistry secretKey(String secretKey) {
-        this.secretKey = secretKey;
-        return this;
-    }
 
     public JwtPropertiesRegistry accessTokenValidity(long accessTokenValidityInSecond) {
         this.accessTokenValidity = accessTokenValidityInSecond;
@@ -47,7 +43,7 @@ public class JwtPropertiesRegistry {
         return this;
     }
 
-    public JwtPropertiesRegistry payloadClazz(Class<? extends  Payload> payloadClazz) {
+    public JwtPropertiesRegistry payloadClazz(Class<? extends Payload> payloadClazz) {
         this.payloadClazz = payloadClazz;
         return this;
     }
@@ -58,25 +54,12 @@ public class JwtPropertiesRegistry {
     }
 
     protected JwtProperties apply() {
-        validateSecretKey();
         return new JwtProperties(
-                secretKey,
                 existOrDefaultValidity(accessTokenValidity, DEFAULT_ACCESS_TOKEN_VALIDITY),
                 existOrDefaultValidity(refreshTokenValidity, DEFAULT_REFRESH_TOKEN_VALIDITY),
                 existOrDefaultPayload(payloadClazz),
-                existOrDefaultSubject(subjectClazz),
-                Keys.hmacShaKeyFor(secretKey.getBytes())
+                existOrDefaultSubject(subjectClazz)
         );
-    }
-
-    private void validateSecretKey() {
-        if (secretKey == null || secretKey.isEmpty()) {
-            throw new IllegalArgumentException("Secret key cannot be empty!");
-        }
-
-        if (secretKey.length() < 32) {
-            throw new IllegalArgumentException("Secret key must be longer than 32!");
-        }
     }
 
     private long existOrDefaultValidity(long validityInSecond, long defaultValidityInSecond) {

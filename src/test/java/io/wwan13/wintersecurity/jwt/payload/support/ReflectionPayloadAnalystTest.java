@@ -98,7 +98,6 @@ class ReflectionPayloadAnalystTest extends UnitTest {
     private JwtProperties getJwtProperties(Class<? extends Payload> payloadClazz) {
         return JwtPropertiesApplier.apply(
                 new JwtPropertiesRegistry()
-                        .secretKey("asdasdasdasdasdasdasdasdasdasdasdasdasd")
                         .payloadClazz(payloadClazz)
                         .subjectClazz(long.class)
         );

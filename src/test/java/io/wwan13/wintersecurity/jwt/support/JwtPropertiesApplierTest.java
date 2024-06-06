@@ -36,7 +36,6 @@ class JwtPropertiesApplierTest extends UnitTest {
         final Class<?> subjectClass = long.class;
 
         JwtPropertiesRegistry registry = new JwtPropertiesRegistry()
-                .secretKey(secretKey)
                 .accessTokenValidity(accessTokenValidity)
                 .refreshTokenValidity(refreshTokenValidity)
                 .payloadClazz(payloadClass)
@@ -47,7 +46,6 @@ class JwtPropertiesApplierTest extends UnitTest {
 
         // then
         assertThat(jwtProperties).isInstanceOf(JwtProperties.class);
-        assertThat(jwtProperties.secretKey()).isEqualTo(secretKey);
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(accessTokenValidity);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(refreshTokenValidity);
         assertThat(jwtProperties.payloadClazz()).isEqualTo(payloadClass);

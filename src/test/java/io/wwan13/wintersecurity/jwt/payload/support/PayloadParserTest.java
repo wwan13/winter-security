@@ -17,7 +17,11 @@
 package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.jwt.*;
+import io.wwan13.wintersecurity.jwt.JwtProperties;
+import io.wwan13.wintersecurity.jwt.Payload;
+import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
+import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
+import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.junit.jupiter.api.Test;
@@ -225,7 +229,6 @@ class PayloadParserTest extends UnitTest {
     private PayloadAnalysis getPayloadAnalysis(Class<? extends Payload> payloadClazz) {
         JwtProperties jwtProperties = JwtPropertiesApplier.apply(
                 new JwtPropertiesRegistry()
-                        .secretKey("asdasdasdasdasdasdasdasdasdasdasdasdasdasdasd")
                         .payloadClazz(payloadClazz)
                         .subjectClazz(long.class)
         );

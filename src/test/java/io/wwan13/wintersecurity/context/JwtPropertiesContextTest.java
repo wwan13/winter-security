@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Import({TestContextConfig.class})
 public class JwtPropertiesContextTest extends ContextTest {
 
@@ -35,8 +36,6 @@ public class JwtPropertiesContextTest extends ContextTest {
     @Test
     void should_RegisteredInSpringIocWithEnteredValue_when_ContextLoaded() {
         // given, then, then
-        assertThat(jwtProperties.secretKey())
-                .isEqualTo("secretkey123123123123123123123123123123123123123123123123");
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(1000L);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(1000L);
         assertThat(jwtProperties.payloadClazz()).isEqualTo(DefaultPayload.class);

@@ -16,7 +16,13 @@
 
 package io.wwan13.wintersecurity.jwt.provider;
 
-import io.wwan13.wintersecurity.jwt.*;
+import io.wwan13.wintersecurity.jwt.JwtProperties;
+import io.wwan13.wintersecurity.jwt.Payload;
+import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
+import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
+import io.wwan13.wintersecurity.jwt.PayloadParser;
+import io.wwan13.wintersecurity.jwt.TokenDecoder;
+import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
@@ -24,6 +30,7 @@ import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
 import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
+import io.wwan13.wintersecurity.secretkey.SecretKey;
 
 public class ProviderTestContainer {
 
@@ -57,9 +64,12 @@ public class ProviderTestContainer {
         }
     }
 
+    public static SecretKey secretKey = SecretKey.of(
+            "secret-key-secret-key-secret-key-secret-key-secret-key-secret-key"
+    );
+
     public static JwtProperties jwtProperties = JwtPropertiesApplier.apply(
             new JwtPropertiesRegistry()
-                    .secretKey("secret-key-secret-key-secret-key-secret-key-secret-key-secret-key")
                     .accessTokenValidity(100000000000L)
                     .refreshTokenValidity(100000000000L)
                     .payloadClazz(TestPayload.class)
@@ -73,7 +83,8 @@ public class ProviderTestContainer {
 
     public static PayloadParser payloadParser = new JwtPayloadParser(payloadAnalysis());
 
-    public static TokenGenerator tokenGenerator = new JwtTokenGenerator(jwtProperties, payloadParser);
+    public static TokenGenerator tokenGenerator =
+            new JwtTokenGenerator(secretKey, jwtProperties, payloadParser);
 
-    public static TokenDecoder tokenDecoder = new JwtTokenDecoder(jwtProperties);
+    public static TokenDecoder tokenDecoder = new JwtTokenDecoder(secretKey);
 }

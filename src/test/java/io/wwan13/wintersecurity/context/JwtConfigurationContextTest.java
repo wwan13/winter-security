@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Import({TestContextConfig.class})
 public class JwtConfigurationContextTest extends ContextTest {
 

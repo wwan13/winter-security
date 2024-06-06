@@ -29,7 +29,6 @@ public class JwtPropertiesRegistrar {
         this.webSecurityConfigurer = webSecurityConfigurer;
     }
 
-
     @Bean
     public JwtProperties jwtProperties() {
         JwtPropertiesRegistry registry = new JwtPropertiesRegistry();

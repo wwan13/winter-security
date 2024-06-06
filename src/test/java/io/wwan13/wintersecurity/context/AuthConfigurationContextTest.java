@@ -32,6 +32,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Import({TestContextConfig.class})
 public class AuthConfigurationContextTest extends ContextTest {
 

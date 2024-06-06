@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Import(TestContextConfig.class)
 public class PasswordEncoderConfigurationContextTest extends ContextTest {
 

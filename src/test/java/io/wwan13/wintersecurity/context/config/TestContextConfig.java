@@ -43,7 +43,6 @@ public class TestContextConfig implements WebSecurityConfigurer {
     @Override
     public void configureJwt(JwtPropertiesRegistry registry) {
         registry
-                .secretKey("secretkey123123123123123123123123123123123123123123123123")
                 .accessTokenValidity(1000L)
                 .refreshTokenValidity(1000L)
                 .payloadClazz(DefaultPayload.class)

@@ -16,12 +16,9 @@
 
 package io.wwan13.wintersecurity.jwt;
 
-import io.jsonwebtoken.security.Keys;
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import org.junit.jupiter.api.Test;
-
-import java.security.Key;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,29 +27,23 @@ class JwtPropertiesTest extends UnitTest {
     @Test
     void should_CreateJwtPropertiesClass_when_DateEntered() {
         // given
-        final String secretKey = "secretkey123123123123123123123123123123123123123123123123";
         final long accessTokenValidity = 1000L;
         final long refreshTokenValidity = 1000L;
         final Class<? extends Payload> payloadClass = DefaultPayload.class;
         final Class<?> subjectClass = long.class;
-        final Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
         // when
         JwtProperties jwtProperties = new JwtProperties(
-                secretKey,
                 accessTokenValidity,
                 refreshTokenValidity,
                 payloadClass,
-                subjectClass,
-                key
+                subjectClass
         );
 
         // then
-        assertThat(jwtProperties.secretKey()).isEqualTo(secretKey);
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(accessTokenValidity);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(refreshTokenValidity);
         assertThat(jwtProperties.payloadClazz()).isEqualTo(payloadClass);
         assertThat(jwtProperties.subjectClazz()).isEqualTo(subjectClass);
-        assertThat(jwtProperties.key()).isEqualTo(key);
     }
 }
