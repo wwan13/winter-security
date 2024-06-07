@@ -18,5 +18,5 @@ package io.wwan13.wintersecurity.jwt;
 
 public interface PayloadAnalyst {
 
-    PayloadAnalysis analyze(JwtProperties jwtProperties);
+    PayloadAnalysis analyze(Class<?> payloadClazz);
 }

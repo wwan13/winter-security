@@ -26,7 +26,6 @@ import io.wwan13.wintersecurity.auth.provider.HttpRequestAccessManager;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletRequest;
 import io.wwan13.wintersecurity.exception.forbidden.ForbiddenException;
 import io.wwan13.wintersecurity.exception.unauthirized.UnauthorizedException;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.provider.ProviderTestContainer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -77,7 +76,7 @@ class InterceptorAuthProcessorTest extends UnitTest {
         request.getMethodWillReturn(method);
         request.getRequestUriWillReturn(uri);
 
-        final Payload payload = new ProviderTestContainer.TestPayload(1, role, "claim");
+        final Object payload = new ProviderTestContainer.TestPayload(1, role, "claim");
         final String token = ProviderTestContainer.tokenGenerator.accessToken(payload);
         final String bearerToken = "Bearer " + token;
         request.getHeaderWillReturn(bearerToken);
@@ -102,7 +101,7 @@ class InterceptorAuthProcessorTest extends UnitTest {
         request.getMethodWillReturn(method);
         request.getRequestUriWillReturn(uri);
 
-        final Payload payload = new ProviderTestContainer.TestPayload(1, role, "claim");
+        final Object payload = new ProviderTestContainer.TestPayload(1, role, "claim");
         final String token = ProviderTestContainer.tokenGenerator.accessToken(payload);
         final String bearerToken = "Bearer " + token;
         request.getHeaderWillReturn(bearerToken);

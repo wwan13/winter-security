@@ -18,7 +18,6 @@ package io.wwan13.wintersecurity.jwt.support;
 
 import io.wwan13.wintersecurity.constant.Constants;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 import org.junit.jupiter.api.Test;
 
@@ -32,27 +31,21 @@ class JwtPropertiesRegistryTest {
         // given
         final long accessTokenValidity = 1000L;
         final long refreshTokenValidity = 1000L;
-        final Class<? extends Payload> payloadClass = DefaultPayload.class;
-        final Class<?> subjectClass = long.class;
 
         // when
         JwtProperties jwtProperties = new JwtPropertiesRegistry()
                 .accessTokenValidity(accessTokenValidity)
                 .refreshTokenValidity(refreshTokenValidity)
-                .payloadClazz(payloadClass)
-                .subjectClazz(subjectClass)
                 .apply();
 
         // then
         assertThat(jwtProperties).isInstanceOf(JwtProperties.class);
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(accessTokenValidity);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(refreshTokenValidity);
-        assertThat(jwtProperties.payloadClazz()).isEqualTo(payloadClass);
-        assertThat(jwtProperties.subjectClazz()).isEqualTo(subjectClass);
     }
 
     @Test
-    void should_ReplaceToDefaultValue_when_ValidityAndClazzValuesNotEntered() {
+    void should_ReplaceToDefaultValue_when_ValidityNotEntered() {
         // given, when
         JwtProperties jwtProperties = new JwtPropertiesRegistry()
                 .apply();
@@ -60,7 +53,5 @@ class JwtPropertiesRegistryTest {
         // then
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(Constants.DEFAULT_ACCESS_TOKEN_VALIDITY);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(Constants.DEFAULT_REFRESH_TOKEN_VALIDITY);
-        assertThat(jwtProperties.payloadClazz()).isEqualTo(Constants.DEFAULT_PAYLOAD_CLAZZ);
-        assertThat(jwtProperties.subjectClazz()).isEqualTo(Constants.DEFAULT_SUBJECT_CLAZZ);
     }
 }

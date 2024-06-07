@@ -20,10 +20,12 @@ import io.wwan13.wintersecurity.jwt.JwtProperties;
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
+import io.wwan13.wintersecurity.jwt.PayloadScanner;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
-import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadAnalyst;
+import io.wwan13.wintersecurity.jwt.payload.support.DefaultPayloadAnalyst;
+import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadScanner;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
 import io.wwan13.wintersecurity.secretkey.SecretKey;
@@ -47,8 +49,11 @@ public class JwtConfiguration {
 
     @Bean
     public PayloadAnalysis payloadAnalysis(JwtProperties jwtProperties) {
-        PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
-        return payloadAnalyst.analyze(jwtProperties);
+        PayloadScanner payloadScanner = new ReflectionPayloadScanner();
+        PayloadAnalyst payloadAnalyst = new DefaultPayloadAnalyst();
+
+        Class<?> scannedPayload = payloadScanner.scan();
+        return payloadAnalyst.analyze(scannedPayload);
     }
 
     @Bean

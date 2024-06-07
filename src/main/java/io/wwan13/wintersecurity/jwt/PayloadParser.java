@@ -21,7 +21,9 @@ import java.util.Set;
 
 public interface PayloadParser {
 
-    String asSubject(Payload payload);
-    Set<String> asRoles(Payload payload);
-    Map<String, Object> asAdditionalClaims(Payload payload);
+    String asSubject(Object payload);
+
+    Set<String> asRoles(Object payload);
+
+    Map<String, Object> asAdditionalClaims(Object payload);
 }

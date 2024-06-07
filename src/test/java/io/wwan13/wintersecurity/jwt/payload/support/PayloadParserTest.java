@@ -17,13 +17,9 @@
 package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -39,7 +35,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final Long subject = 1L;
         final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithWrapperClassSubject(subject, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithWrapperClassSubject(subject, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithWrapperClassSubject.class);
@@ -57,7 +53,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithDataTypeSubject(subject, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithDataTypeSubject(subject, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithDataTypeSubject.class);
@@ -75,7 +71,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long id = 1L;
         final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithSubjectFieldNameId(id, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithSubjectFieldNameId(id, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithSubjectFieldNameId.class);
@@ -93,7 +89,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithCollectionClassRoles(subject, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithCollectionClassRoles(subject, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithCollectionClassRoles.class);
@@ -111,7 +107,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long subject = 1L;
         final String roles = "role";
-        Payload payload = new TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles(subject, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles(subject, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithNoneCollectionClassRoles.class);
@@ -129,7 +125,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long subject = 1L;
         final Set<Object> roles = Set.of(1, 2);
-        Payload payload = new TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles(subject, roles);
+        Object payload = new TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles(subject, roles);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithOtherObjectSetRoles.class);
@@ -147,7 +143,7 @@ class PayloadParserTest extends UnitTest {
         // given
         final long subject = 1L;
         final Set<String> authorities = Set.of("role");
-        Payload payload = new TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities(subject, authorities);
+        Object payload = new TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities(subject, authorities);
 
         PayloadAnalysis payloadAnalysis =
                 getPayloadAnalysis(TestJwtPayloads.JwtPayloadWithRolesFieldNameAuthorities.class);
@@ -167,7 +163,7 @@ class PayloadParserTest extends UnitTest {
         final Set<String> roles = Set.of("role");
         final long dataTypeClaim = 1L;
         final Long wrapperClassClaim = 1L;
-        Payload payload = new TestJwtPayloads
+        Object payload = new TestJwtPayloads
                 .JwtPayloadWithDataTypeAndWrapperClassClaims(subject, roles, dataTypeClaim, wrapperClassClaim);
 
         PayloadAnalysis payloadAnalysis =
@@ -192,7 +188,7 @@ class PayloadParserTest extends UnitTest {
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
         final long claim = 1L;
-        Payload payload = new TestJwtPayloads
+        Object payload = new TestJwtPayloads
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         PayloadAnalysis payloadAnalysis =
@@ -212,7 +208,7 @@ class PayloadParserTest extends UnitTest {
         final long subject = 1L;
         final Set<String> roles = Set.of("role");
         final long claim = 1L;
-        Payload payload = new TestJwtPayloads
+        Object payload = new TestJwtPayloads
                 .JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(subject, roles, claim, claim);
 
         PayloadAnalysis payloadAnalysis =
@@ -226,13 +222,8 @@ class PayloadParserTest extends UnitTest {
         assertThat(result.keySet()).contains("annotated", "notAnnotated");
     }
 
-    private PayloadAnalysis getPayloadAnalysis(Class<? extends Payload> payloadClazz) {
-        JwtProperties jwtProperties = JwtPropertiesApplier.apply(
-                new JwtPropertiesRegistry()
-                        .payloadClazz(payloadClazz)
-                        .subjectClazz(long.class)
-        );
-        PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
-        return payloadAnalyst.analyze(jwtProperties);
+    private PayloadAnalysis getPayloadAnalysis(Class<?> payloadClazz) {
+        PayloadAnalyst payloadAnalyst = new DefaultPayloadAnalyst();
+        return payloadAnalyst.analyze(payloadClazz);
     }
 }

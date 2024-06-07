@@ -14,30 +14,9 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt.payload;
+package io.wwan13.wintersecurity.jwt;
 
-import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
+public interface PayloadScanner {
 
-import java.util.Set;
-
-public class DefaultPayload {
-
-    @Subject
-    private Object subject;
-    @Roles
-    private Set<Object> roles;
-
-    public DefaultPayload(Object subject, Set<Object> roles) {
-        this.subject = subject;
-        this.roles = roles;
-    }
-
-    public Object getSubject() {
-        return subject;
-    }
-
-    public Set<Object> getRoles() {
-        return roles;
-    }
+    Class<?> scan();
 }

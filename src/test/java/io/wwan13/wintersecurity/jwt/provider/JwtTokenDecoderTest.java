@@ -19,7 +19,6 @@ package io.wwan13.wintersecurity.jwt.provider;
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
@@ -45,7 +44,7 @@ class JwtTokenDecoderTest {
         final long id = 1L;
         final String role = "role";
         final String claim = "claim";
-        Payload payload = new ProviderTestContainer.TestPayload(id, role, claim);
+        Object payload = new ProviderTestContainer.TestPayload(id, role, claim);
 
         String accessToken = tokenGenerator.accessToken(payload);
 
@@ -78,7 +77,6 @@ class JwtTokenDecoderTest {
         final JwtProperties properties = JwtPropertiesApplier.apply(
                 new JwtPropertiesRegistry()
                         .accessTokenValidity(-1L)
-                        .payloadClazz(ProviderTestContainer.TestPayload.class)
         );
         final TokenGenerator tokenGenerator =
                 new JwtTokenGenerator(secretKey, properties, ProviderTestContainer.payloadParser);
@@ -87,7 +85,7 @@ class JwtTokenDecoderTest {
         final long id = 1L;
         final String role = "role";
         final String claim = "claim";
-        Payload payload = new ProviderTestContainer.TestPayload(id, role, claim);
+        Object payload = new ProviderTestContainer.TestPayload(id, role, claim);
 
         final String invalidToken = tokenGenerator.accessToken(payload);
 

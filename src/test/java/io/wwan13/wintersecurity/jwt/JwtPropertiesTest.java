@@ -29,21 +29,15 @@ class JwtPropertiesTest extends UnitTest {
         // given
         final long accessTokenValidity = 1000L;
         final long refreshTokenValidity = 1000L;
-        final Class<? extends Payload> payloadClass = DefaultPayload.class;
-        final Class<?> subjectClass = long.class;
 
         // when
         JwtProperties jwtProperties = new JwtProperties(
                 accessTokenValidity,
-                refreshTokenValidity,
-                payloadClass,
-                subjectClass
+                refreshTokenValidity
         );
 
         // then
         assertThat(jwtProperties.accessTokenValidity()).isEqualTo(accessTokenValidity);
         assertThat(jwtProperties.refreshTokenValidity()).isEqualTo(refreshTokenValidity);
-        assertThat(jwtProperties.payloadClazz()).isEqualTo(payloadClass);
-        assertThat(jwtProperties.subjectClazz()).isEqualTo(subjectClass);
     }
 }

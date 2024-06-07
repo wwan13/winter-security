@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.jwt;
+package io.wwan13.wintersecurity.jwt.payload.annotation;
 
-import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.Set;
-
-public interface Payload {
-
-    static DefaultPayload of(Object subject, Set<Object> roles) {
-        return new DefaultPayload(subject, roles);
-    }
+@Documented
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Payload {
 }

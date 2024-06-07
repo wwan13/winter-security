@@ -18,8 +18,6 @@ package io.wwan13.wintersecurity.jwt;
 
 public record JwtProperties(
         long accessTokenValidity,
-        long refreshTokenValidity,
-        Class<? extends Payload> payloadClazz,
-        Class<?> subjectClazz
+        long refreshTokenValidity
 ) {
 }
