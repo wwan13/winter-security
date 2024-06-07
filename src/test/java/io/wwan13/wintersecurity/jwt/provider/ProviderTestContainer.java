@@ -22,7 +22,6 @@ import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 import io.wwan13.wintersecurity.jwt.payload.support.JwtPayloadParser;
@@ -38,7 +37,6 @@ public class ProviderTestContainer {
         long id;
         @Roles
         String role;
-        @Claim
         String claim;
 
         public TestPayload(long id, String role, String claim) {

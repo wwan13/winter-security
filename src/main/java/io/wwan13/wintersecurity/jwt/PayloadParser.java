@@ -16,7 +16,6 @@
 
 package io.wwan13.wintersecurity.jwt;
 
-import java.util.Map;
 import java.util.Set;
 
 public interface PayloadParser {
@@ -24,6 +23,4 @@ public interface PayloadParser {
     String asSubject(Object payload);
 
     Set<String> asRoles(Object payload);
-
-    Map<String, Object> asAdditionalClaims(Object payload);
 }

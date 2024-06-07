@@ -56,17 +56,6 @@ public class JwtPayloadParser implements PayloadParser {
         return Collections.singleton(Objects.toString(values));
     }
 
-    @Override
-    public Map<String, Object> asAdditionalClaims(Object payload) {
-        Set<Field> fields = payloadAnalysis.additionalClaims();
-        Map<String, Object> additionalClaims = new HashMap<>();
-
-        fields.forEach(field ->
-                additionalClaims.put(field.getName(), getFieldValue(payload, field)));
-
-        return additionalClaims;
-    }
-
     private Object getFieldValue(Object payload, Field field) {
         try {
             field.setAccessible(true);

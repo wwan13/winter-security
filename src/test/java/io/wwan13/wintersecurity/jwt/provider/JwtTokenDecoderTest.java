@@ -54,7 +54,6 @@ class JwtTokenDecoderTest {
         // then
         assertThat(decodedClaims.get("sub")).isEqualTo(Objects.toString(id));
         assertThat(decodedClaims.get("roles")).isEqualTo(RoleSerializer.serialize(Set.of(role)));
-        assertThat(decodedClaims.get("claim")).isEqualTo(claim);
     }
 
     @Test

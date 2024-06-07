@@ -23,12 +23,11 @@ import java.util.Set;
 public record PayloadAnalysis(
         Class<?> payloadClazz,
         Field subject,
-        Field roles,
-        Set<Field> additionalClaims
+        Field roles
 ) {
 
     public Set<Field> allClaims() {
-        Set<Field> allClaims = new HashSet<>(additionalClaims);
+        Set<Field> allClaims = new HashSet<>();
         allClaims.add(subject);
         allClaims.add(roles);
 
