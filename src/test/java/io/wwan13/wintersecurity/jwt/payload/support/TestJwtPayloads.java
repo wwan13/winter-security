@@ -16,7 +16,6 @@
 
 package io.wwan13.wintersecurity.jwt.payload.support;
 
-import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 
@@ -153,50 +152,6 @@ public class TestJwtPayloads {
             this.subject = subject;
             this.roles1 = roles1;
             this.roles2 = roles2;
-        }
-    }
-
-    static class JwtPayloadWithDataTypeAndWrapperClassClaims {
-        @Subject
-        long subject;
-        @Roles
-        Set<String> roles;
-        @Claim
-        long dataTypeClaim;
-        @Claim
-        Long wrapperClassClaim;
-
-        public JwtPayloadWithDataTypeAndWrapperClassClaims(
-                long subject, Set<String> roles,
-                long dataTypeClaim,
-                Long wrapperClassClaim
-        ) {
-            this.subject = subject;
-            this.roles = roles;
-            this.dataTypeClaim = dataTypeClaim;
-            this.wrapperClassClaim = wrapperClassClaim;
-        }
-    }
-
-    static class JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim {
-        @Subject
-        long subject;
-        @Roles
-        Set<String> roles;
-        @Claim
-        long annotated;
-        long notAnnotated;
-
-        public JwtPayloadWithAnnotatedClaimAndNotAnnotatedClaim(
-                long subject,
-                Set<String> roles,
-                long annotated,
-                long notAnnotated
-        ) {
-            this.subject = subject;
-            this.roles = roles;
-            this.annotated = annotated;
-            this.notAnnotated = notAnnotated;
         }
     }
 }

@@ -53,7 +53,6 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .setExpiration(DateUtil.addFromNow(properties.accessTokenValidity()))
                 .claim(PAYLOAD_KEY_TOKEN_TYPE, TOKEN_TYPE_ACCESS)
                 .claim(PAYLOAD_KEY_USER_ROLE, RoleSerializer.serialize(payloadParser.asRoles(payload)))
-                .addClaims(payloadParser.asAdditionalClaims(payload))
                 .signWith(secretKey.value())
                 .compact();
     }
@@ -66,7 +65,6 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .setExpiration(DateUtil.addFromNow(properties.refreshTokenValidity()))
                 .claim(PAYLOAD_KEY_TOKEN_TYPE, TOKEN_TYPE_REFRESH)
                 .claim(PAYLOAD_KEY_USER_ROLE, RoleSerializer.serialize(payloadParser.asRoles(payload)))
-                .addClaims(payloadParser.asAdditionalClaims(payload))
                 .signWith(secretKey.value())
                 .compact();
     }

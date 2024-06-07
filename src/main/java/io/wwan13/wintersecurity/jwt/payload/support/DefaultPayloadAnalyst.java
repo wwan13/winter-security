@@ -18,7 +18,6 @@ package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
-import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 
@@ -37,9 +36,8 @@ public class DefaultPayloadAnalyst implements PayloadAnalyst {
     public PayloadAnalysis analyze(Class<?> payloadClazz) {
         Field subject = findFieldByDeclaredAnnotation(payloadClazz, Subject.class);
         Field roles = findFieldByDeclaredAnnotation(payloadClazz, Roles.class);
-        Set<Field> additionalClaims = findAdditionalClaimFields(payloadClazz);
 
-        return new PayloadAnalysis(payloadClazz, subject, roles, additionalClaims);
+        return new PayloadAnalysis(payloadClazz, subject, roles);
     }
 
     private Field findFieldByDeclaredAnnotation(
@@ -65,17 +63,5 @@ public class DefaultPayloadAnalyst implements PayloadAnalyst {
         if (fields.isEmpty()) {
             throw new IllegalStateException(declared.getSimpleName() + " cannot be empty");
         }
-    }
-
-    private Set<Field> findAdditionalClaimFields(
-            Class<?> payloadClazz
-    ) {
-        return Arrays.stream(payloadClazz.getDeclaredFields())
-                .filter(this::isAdditionalClaim)
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private boolean isAdditionalClaim(Field field) {
-        return field.isAnnotationPresent(Claim.class) || field.getDeclaredAnnotations().length == 0;
     }
 }

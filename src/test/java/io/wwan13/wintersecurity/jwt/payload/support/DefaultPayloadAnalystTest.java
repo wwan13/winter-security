@@ -34,7 +34,7 @@ class DefaultPayloadAnalystTest extends UnitTest {
     void should_AnalyzePayloadFields() {
         // given
         final Class<?> payloadClazz =
-                TestJwtPayloads.JwtPayloadWithDataTypeAndWrapperClassClaims.class;
+                TestJwtPayloads.JwtPayloadWithWrapperClassSubject.class;
 
         // when
         PayloadAnalysis payloadAnalysis = payloadAnalyst.analyze(payloadClazz);
@@ -43,8 +43,6 @@ class DefaultPayloadAnalystTest extends UnitTest {
         assertThat(payloadAnalysis.payloadClazz()).isInstanceOf(Class.class);
         assertThat(payloadAnalysis.subject().getName()).isEqualTo("subject");
         assertThat(payloadAnalysis.roles().getName()).isEqualTo("roles");
-        assertThat(payloadAnalysis.additionalClaims().stream().map(Field::getName))
-                .contains("wrapperClassClaim", "dataTypeClaim");
     }
 
     @Test
