@@ -16,8 +16,6 @@
 
 package io.wwan13.wintersecurity.jwt;
 
-import java.util.Map;
-
 public interface TokenDecoder {
-    Map<String, Object> decode(String token);
+    TokenClaims decode(String token);
 }

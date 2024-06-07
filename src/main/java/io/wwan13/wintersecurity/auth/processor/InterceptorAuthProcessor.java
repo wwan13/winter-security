@@ -20,12 +20,11 @@ import io.wwan13.wintersecurity.auth.RequestAccessManager;
 import io.wwan13.wintersecurity.auth.RequestStorage;
 import io.wwan13.wintersecurity.auth.TokenExtractor;
 import io.wwan13.wintersecurity.constant.Constants;
+import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
-import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
 import org.springframework.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 public class InterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
 
@@ -57,16 +56,15 @@ public class InterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
             HttpServletRequest request,
             RequestStorage storage
     ) {
-        Map<String, Object> claims = tokenDecoder.decode(token);
-        String rawRoles = (String) claims.get(Constants.PAYLOAD_KEY_USER_ROLE);
+        TokenClaims claims = tokenDecoder.decode(token);
 
         accessManager.manageWithAuthentication(
                 HttpMethod.resolve(request.getMethod()),
                 request.getRequestURI(),
-                RoleSerializer.deserialize(rawRoles)
+                claims.getRoles()
         );
 
-        storage.saveAll(claims);
+        storage.save(Constants.ATTRIBUTE_CLAIMS_KEY, claims);
     }
 
     private void actionIfTokenAbsent(HttpServletRequest request) {
