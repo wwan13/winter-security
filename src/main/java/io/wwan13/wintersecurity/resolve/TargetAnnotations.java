@@ -21,9 +21,6 @@ import java.util.Set;
 
 public record TargetAnnotations(
         Set<Class<? extends Annotation>> forSubject,
-        Set<Class<? extends Annotation>> forRoles,
-        Set<Class<? extends Annotation>> forClaims,
-        Set<Class<? extends Annotation>> forClaim,
-        Set<Class<? extends Annotation>> forPayload
+        Set<Class<? extends Annotation>> forRoles
 ) {
 }

@@ -31,25 +31,16 @@ class TargetAnnotationsTest extends UnitTest {
         // given
         final Class<? extends Annotation> forSubject = RequestUserSubject.class;
         final Class<? extends Annotation> forRoles = RequestUserRoles.class;
-        final Class<? extends Annotation> forClaims = RequestUserClaims.class;
-        final Class<? extends Annotation> forClaim = RequestUserClaim.class;
-        final Class<? extends Annotation> forPayload = RequestUserPayload.class;
 
         // when
         TargetAnnotations targetAnnotations = new TargetAnnotations(
                 Set.of(forSubject),
-                Set.of(forRoles),
-                Set.of(forClaims),
-                Set.of(forClaim),
-                Set.of(forPayload)
+                Set.of(forRoles)
         );
 
         // then
         assertThat(targetAnnotations).isInstanceOf(TargetAnnotations.class);
         assertThat(targetAnnotations.forSubject()).contains(forSubject);
         assertThat(targetAnnotations.forRoles()).contains(forRoles);
-        assertThat(targetAnnotations.forClaims()).contains(forClaims);
-        assertThat(targetAnnotations.forClaim()).contains(forClaim);
-        assertThat(targetAnnotations.forPayload()).contains(forPayload);
     }
 }
