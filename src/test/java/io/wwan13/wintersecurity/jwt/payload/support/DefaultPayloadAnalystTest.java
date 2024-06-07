@@ -17,12 +17,8 @@
 package io.wwan13.wintersecurity.jwt.payload.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesApplier;
-import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -30,18 +26,18 @@ import java.lang.reflect.Field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ReflectionPayloadAnalystTest extends UnitTest {
+class DefaultPayloadAnalystTest extends UnitTest {
 
-    static PayloadAnalyst payloadAnalyst = new ReflectionPayloadAnalyst();
+    static PayloadAnalyst payloadAnalyst = new DefaultPayloadAnalyst();
 
     @Test
     void should_AnalyzePayloadFields() {
         // given
-        JwtProperties jwtProperties =
-                getJwtProperties(TestJwtPayloads.JwtPayloadWithDataTypeAndWrapperClassClaims.class);
+        final Class<?> payloadClazz =
+                TestJwtPayloads.JwtPayloadWithDataTypeAndWrapperClassClaims.class;
 
         // when
-        PayloadAnalysis payloadAnalysis = payloadAnalyst.analyze(jwtProperties);
+        PayloadAnalysis payloadAnalysis = payloadAnalyst.analyze(payloadClazz);
 
         // then
         assertThat(payloadAnalysis.payloadClazz()).isInstanceOf(Class.class);
@@ -54,52 +50,40 @@ class ReflectionPayloadAnalystTest extends UnitTest {
     @Test
     void should_ThrowException_when_NoSubjectDeclared() {
         // given
-        JwtProperties jwtProperties =
-                getJwtProperties(TestJwtPayloads.JwtPayloadWithNoSubject.class);
+        final Class<?> payloadClazz = TestJwtPayloads.JwtPayloadWithNoSubject.class;
 
         // when, then
-        assertThatThrownBy(() -> payloadAnalyst.analyze(jwtProperties))
+        assertThatThrownBy(() -> payloadAnalyst.analyze(payloadClazz))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void should_ThrowException_when_MoreThanTwoSubjectDeclared() {
         // given
-        JwtProperties jwtProperties =
-                getJwtProperties(TestJwtPayloads.JwtPayloadWithTwoSubject.class);
+        final Class<?> payloadClazz = TestJwtPayloads.JwtPayloadWithTwoSubject.class;
 
         // when, then
-        assertThatThrownBy(() -> payloadAnalyst.analyze(jwtProperties))
+        assertThatThrownBy(() -> payloadAnalyst.analyze(payloadClazz))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void should_ThrowException_when_NoRolesDeclared() {
         // given
-        JwtProperties jwtProperties =
-                getJwtProperties(TestJwtPayloads.JwtPayloadWithNoRoles.class);
+        final Class<?> payloadClazz = TestJwtPayloads.JwtPayloadWithNoRoles.class;
 
         // when, then
-        assertThatThrownBy(() -> payloadAnalyst.analyze(jwtProperties))
+        assertThatThrownBy(() -> payloadAnalyst.analyze(payloadClazz))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void should_ThrowException_when_MoreThanTwoRolesDeclared() {
         // given
-        JwtProperties jwtProperties =
-                getJwtProperties(TestJwtPayloads.JwtPayloadWithTwoRoles.class);
+        final Class<?> payloadClazz = TestJwtPayloads.JwtPayloadWithTwoRoles.class;
 
         // when, then
-        assertThatThrownBy(() -> payloadAnalyst.analyze(jwtProperties))
+        assertThatThrownBy(() -> payloadAnalyst.analyze(payloadClazz))
                 .isInstanceOf(IllegalStateException.class);
-    }
-
-    private JwtProperties getJwtProperties(Class<? extends Payload> payloadClazz) {
-        return JwtPropertiesApplier.apply(
-                new JwtPropertiesRegistry()
-                        .payloadClazz(payloadClazz)
-                        .subjectClazz(long.class)
-        );
     }
 }

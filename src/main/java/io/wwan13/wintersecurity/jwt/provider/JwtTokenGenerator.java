@@ -18,7 +18,6 @@ package io.wwan13.wintersecurity.jwt.provider;
 
 import io.jsonwebtoken.Jwts;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
@@ -47,8 +46,7 @@ public class JwtTokenGenerator implements TokenGenerator {
     }
 
     @Override
-    public String accessToken(Payload payload) {
-        validatePayloadClazz(payload.getClass());
+    public String accessToken(Object payload) {
         return Jwts.builder()
                 .setSubject(payloadParser.asSubject(payload))
                 .setIssuedAt(DateUtil.now())
@@ -61,8 +59,7 @@ public class JwtTokenGenerator implements TokenGenerator {
     }
 
     @Override
-    public String refreshToken(Payload payload) {
-        validatePayloadClazz(payload.getClass());
+    public String refreshToken(Object payload) {
         return Jwts.builder()
                 .setSubject(payloadParser.asSubject(payload))
                 .setIssuedAt(DateUtil.now())
@@ -72,11 +69,5 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .addClaims(payloadParser.asAdditionalClaims(payload))
                 .signWith(secretKey.value())
                 .compact();
-    }
-
-    private void validatePayloadClazz(Class<? extends Payload> clazz) {
-        if (!clazz.equals(properties.payloadClazz())) {
-            throw new IllegalArgumentException("The type of payload between set and entered do not match.");
-        }
     }
 }

@@ -16,25 +16,24 @@
 
 package io.wwan13.wintersecurity.jwt.provider;
 
-import io.wwan13.wintersecurity.jwt.Payload;
 import org.junit.jupiter.api.Test;
 
 import static io.wwan13.wintersecurity.jwt.provider.ProviderTestContainer.tokenGenerator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JwtTokenGeneratorTest {
-    
+
     @Test
     void should_CreateAccessToken() {
         // given
         final long id = 1L;
         final String role = "role";
         final String claim = "claim";
-        Payload payload = new ProviderTestContainer.TestPayload(id, role, claim);
-      
+        Object payload = new ProviderTestContainer.TestPayload(id, role, claim);
+
         // when
         String accessToken = tokenGenerator.accessToken(payload);
-      
+
         // then
         assertThat(accessToken).isNotEmpty();
     }
@@ -45,7 +44,7 @@ class JwtTokenGeneratorTest {
         final long id = 1L;
         final String role = "role";
         final String claim = "claim";
-        Payload payload = new ProviderTestContainer.TestPayload(id, role, claim);
+        Object payload = new ProviderTestContainer.TestPayload(id, role, claim);
 
         // when
         String refreshToken = tokenGenerator.refreshToken(payload);

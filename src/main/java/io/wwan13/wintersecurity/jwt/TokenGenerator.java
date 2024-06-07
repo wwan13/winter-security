@@ -17,6 +17,8 @@
 package io.wwan13.wintersecurity.jwt;
 
 public interface TokenGenerator {
-    String accessToken(Payload payload);
-    String refreshToken(Payload payload);
+    
+    String accessToken(Object payload);
+
+    String refreshToken(Object payload);
 }

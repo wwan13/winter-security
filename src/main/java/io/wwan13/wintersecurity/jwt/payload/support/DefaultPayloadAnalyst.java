@@ -16,8 +16,6 @@
 
 package io.wwan13.wintersecurity.jwt.payload.support;
 
-import io.wwan13.wintersecurity.jwt.JwtProperties;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadAnalyst;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Claim;
@@ -31,14 +29,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ReflectionPayloadAnalyst implements PayloadAnalyst {
+public class DefaultPayloadAnalyst implements PayloadAnalyst {
 
     private static final int FIRST_ELEMENT_INDEX = 0;
 
     @Override
-    public PayloadAnalysis analyze(JwtProperties jwtProperties) {
-        Class<? extends Payload> payloadClazz = jwtProperties.payloadClazz();
-
+    public PayloadAnalysis analyze(Class<?> payloadClazz) {
         Field subject = findFieldByDeclaredAnnotation(payloadClazz, Subject.class);
         Field roles = findFieldByDeclaredAnnotation(payloadClazz, Roles.class);
         Set<Field> additionalClaims = findAdditionalClaimFields(payloadClazz);
@@ -47,7 +43,7 @@ public class ReflectionPayloadAnalyst implements PayloadAnalyst {
     }
 
     private Field findFieldByDeclaredAnnotation(
-            Class<? extends Payload> payloadClazz,
+            Class<?> payloadClazz,
             Class<? extends Annotation> declared
     ) {
         List<Field> fields = Arrays.stream(payloadClazz.getDeclaredFields())
@@ -72,7 +68,7 @@ public class ReflectionPayloadAnalyst implements PayloadAnalyst {
     }
 
     private Set<Field> findAdditionalClaimFields(
-            Class<? extends Payload> payloadClazz
+            Class<?> payloadClazz
     ) {
         return Arrays.stream(payloadClazz.getDeclaredFields())
                 .filter(this::isAdditionalClaim)

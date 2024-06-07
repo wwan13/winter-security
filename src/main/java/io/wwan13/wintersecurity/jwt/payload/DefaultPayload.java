@@ -16,13 +16,12 @@
 
 package io.wwan13.wintersecurity.jwt.payload;
 
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Roles;
 import io.wwan13.wintersecurity.jwt.payload.annotation.Subject;
 
 import java.util.Set;
 
-public class DefaultPayload implements Payload {
+public class DefaultPayload {
 
     @Subject
     private Object subject;

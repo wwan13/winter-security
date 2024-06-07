@@ -16,7 +16,6 @@
 
 package io.wwan13.wintersecurity.jwt.payload.support;
 
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.PayloadParser;
 
@@ -38,13 +37,13 @@ public class JwtPayloadParser implements PayloadParser {
     }
 
     @Override
-    public String asSubject(Payload payload) {
+    public String asSubject(Object payload) {
         Field field = payloadAnalysis.subject();
         return Objects.toString(getFieldValue(payload, field));
     }
 
     @Override
-    public Set<String> asRoles(Payload payload) {
+    public Set<String> asRoles(Object payload) {
         Field field = payloadAnalysis.roles();
         Object values = getFieldValue(payload, field);
 
@@ -58,7 +57,7 @@ public class JwtPayloadParser implements PayloadParser {
     }
 
     @Override
-    public Map<String, Object> asAdditionalClaims(Payload payload) {
+    public Map<String, Object> asAdditionalClaims(Object payload) {
         Set<Field> fields = payloadAnalysis.additionalClaims();
         Map<String, Object> additionalClaims = new HashMap<>();
 
@@ -68,7 +67,7 @@ public class JwtPayloadParser implements PayloadParser {
         return additionalClaims;
     }
 
-    private Object getFieldValue(Payload payload, Field field) {
+    private Object getFieldValue(Object payload, Field field) {
         try {
             field.setAccessible(true);
             return field.get(payload);

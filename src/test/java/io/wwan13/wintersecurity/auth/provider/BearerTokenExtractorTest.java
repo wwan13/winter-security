@@ -19,7 +19,6 @@ package io.wwan13.wintersecurity.auth.provider;
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.auth.AuthTestContainer;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletRequest;
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.provider.ProviderTestContainer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +35,7 @@ class BearerTokenExtractorTest extends UnitTest {
     @Test
     void should_ExtractTokenInHttpRequestHeader() {
         // given
-        final Payload payload = new ProviderTestContainer.TestPayload(1, "role", "claim");
+        final Object payload = new ProviderTestContainer.TestPayload(1, "role", "claim");
         final String token = ProviderTestContainer.tokenGenerator.accessToken(payload);
 
         final StubHttpServletRequest request = new StubHttpServletRequest();
@@ -73,7 +72,7 @@ class BearerTokenExtractorTest extends UnitTest {
             final String bearerPrefix
     ) {
         // given
-        final Payload payload = new ProviderTestContainer.TestPayload(1, "role", "claim");
+        final Object payload = new ProviderTestContainer.TestPayload(1, "role", "claim");
         final String token = ProviderTestContainer.tokenGenerator.accessToken(payload);
 
         final StubHttpServletRequest request = new StubHttpServletRequest();

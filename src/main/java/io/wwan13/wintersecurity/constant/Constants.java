@@ -16,7 +16,6 @@
 
 package io.wwan13.wintersecurity.constant;
 
-import io.wwan13.wintersecurity.jwt.Payload;
 import io.wwan13.wintersecurity.jwt.payload.DefaultPayload;
 
 public class Constants {
@@ -24,8 +23,6 @@ public class Constants {
     // Default Option
     public static final long DEFAULT_ACCESS_TOKEN_VALIDITY = 10000;
     public static final long DEFAULT_REFRESH_TOKEN_VALIDITY = 10000;
-    public static final Class<? extends Payload> DEFAULT_PAYLOAD_CLAZZ = DefaultPayload.class;
-    public static final Class<?> DEFAULT_SUBJECT_CLAZZ = Object.class;
 
     // Payload
     public static final String PAYLOAD_KEY_TOKEN_TYPE = "token_type";
