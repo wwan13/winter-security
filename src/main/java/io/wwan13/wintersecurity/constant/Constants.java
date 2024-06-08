@@ -29,6 +29,9 @@ public class Constants {
     public static final String PAYLOAD_KEY_USER_ROLE = "roles";
     public static final String DEFAULT_SUBJECT_KEY = "sub";
 
+    // Attribute
+    public static final String ATTRIBUTE_CLAIMS_KEY = "claims";
+
     // Token
     public static final String TOKEN_TYPE_ACCESS = "access_token";
     public static final String TOKEN_TYPE_REFRESH = "refresh_token";

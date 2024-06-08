@@ -19,6 +19,7 @@ package io.wwan13.wintersecurity.jwt.provider;
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.jwt.JwtProperties;
+import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.TokenGenerator;
 import io.wwan13.wintersecurity.jwt.payload.util.RoleSerializer;
@@ -27,7 +28,6 @@ import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 import io.wwan13.wintersecurity.secretkey.SecretKey;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -49,7 +49,7 @@ class JwtTokenDecoderTest {
         String accessToken = tokenGenerator.accessToken(payload);
 
         // when
-        Map<String, Object> decodedClaims = tokenDecoder.decode(accessToken);
+        TokenClaims decodedClaims = tokenDecoder.decode(accessToken);
 
         // then
         assertThat(decodedClaims.get("sub")).isEqualTo(Objects.toString(id));

@@ -19,6 +19,7 @@ package io.wwan13.wintersecurity.jwt.provider;
 import io.jsonwebtoken.*;
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
+import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.secretkey.SecretKey;
 
@@ -34,8 +35,9 @@ public class JwtTokenDecoder implements TokenDecoder {
     }
 
     @Override
-    public Map<String, Object> decode(String token) {
-        return parseClaimsWithExceptionHandling(token);
+    public TokenClaims decode(String token) {
+        Map<String, Object> claims = parseClaimsWithExceptionHandling(token);
+        return new TokenClaims(claims);
     }
 
     public Claims parseClaimsWithExceptionHandling(String token) {

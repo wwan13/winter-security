@@ -28,25 +28,13 @@ public class TargetAnnotationsRegistry {
             = Set.of(RequestUserSubject.class, RequestUserId.class);
     private final static Set<Class<? extends Annotation>> DEFAULT_ROLES_TARGETS
             = Set.of(RequestUserRoles.class);
-    private final static Set<Class<? extends Annotation>> DEFAULT_CLAIMS_TARGETS
-            = Set.of(RequestUserClaims.class);
-    private final static Set<Class<? extends Annotation>> DEFAULT_CLAIM_TARGETS
-            = Set.of(RequestUserClaim.class);
-    private final static Set<Class<? extends Annotation>> DEFAULT_PAYLOAD_TARGETS
-            = Set.of(RequestUserPayload.class);
 
     private final Set<Class<? extends Annotation>> forSubject;
     private final Set<Class<? extends Annotation>> forRoles;
-    private final Set<Class<? extends Annotation>> forClaims;
-    private final Set<Class<? extends Annotation>> forClaim;
-    private final Set<Class<? extends Annotation>> forPayload;
 
     public TargetAnnotationsRegistry() {
         this.forSubject = new HashSet<>(DEFAULT_SUBJECT_TARGETS);
         this.forRoles = new HashSet<>(DEFAULT_ROLES_TARGETS);
-        this.forClaims = new HashSet<>(DEFAULT_CLAIMS_TARGETS);
-        this.forClaim = new HashSet<>(DEFAULT_CLAIM_TARGETS);
-        this.forPayload = new HashSet<>(DEFAULT_PAYLOAD_TARGETS);
     }
 
     public TargetAnnotationsRegistry addSubjectResolveAnnotation(
@@ -63,28 +51,7 @@ public class TargetAnnotationsRegistry {
         return this;
     }
 
-    public TargetAnnotationsRegistry addClaimsResolveAnnotation(
-            Class<? extends Annotation> target
-    ) {
-        forClaims.add(target);
-        return this;
-    }
-
-    public TargetAnnotationsRegistry addClaimResolveAnnotation(
-            Class<? extends Annotation> target
-    ) {
-        forClaim.add(target);
-        return this;
-    }
-
-    public TargetAnnotationsRegistry addPayloadResolveAnnotation(
-            Class<? extends Annotation> target
-    ) {
-        forPayload.add(target);
-        return this;
-    }
-
     protected TargetAnnotations apply() {
-        return new TargetAnnotations(forSubject, forRoles, forClaims, forClaim, forPayload);
+        return new TargetAnnotations(forSubject, forRoles);
     }
 }

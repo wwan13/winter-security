@@ -17,10 +17,7 @@
 package io.wwan13.wintersecurity.resolve.support;
 
 import io.wwan13.wintersecurity.UnitTest;
-import io.wwan13.wintersecurity.resolve.RequestUserClaim;
-import io.wwan13.wintersecurity.resolve.RequestUserClaims;
 import io.wwan13.wintersecurity.resolve.RequestUserId;
-import io.wwan13.wintersecurity.resolve.RequestUserPayload;
 import io.wwan13.wintersecurity.resolve.RequestUserRoles;
 import io.wwan13.wintersecurity.resolve.RequestUserSubject;
 import io.wwan13.wintersecurity.resolve.TargetAnnotations;
@@ -37,17 +34,11 @@ class TargetAnnotationsRegistryTest extends UnitTest {
         // given
         final Class<? extends Annotation> forSubject = RequestUserSubject.class;
         final Class<? extends Annotation> forRoles = RequestUserRoles.class;
-        final Class<? extends Annotation> forClaims = RequestUserClaims.class;
-        final Class<? extends Annotation> forClaim = RequestUserClaim.class;
-        final Class<? extends Annotation> forPayload = RequestUserPayload.class;
 
         TargetAnnotationsRegistry registry = new TargetAnnotationsRegistry();
         registry
                 .addSubjectResolveAnnotation(forSubject)
-                .addRolesResolveAnnotation(forRoles)
-                .addClaimsResolveAnnotation(forClaims)
-                .addClaimResolveAnnotation(forClaim)
-                .addPayloadResolveAnnotation(forPayload);
+                .addRolesResolveAnnotation(forRoles);
 
         // when
         TargetAnnotations targetAnnotations = registry.apply();
@@ -56,9 +47,6 @@ class TargetAnnotationsRegistryTest extends UnitTest {
         assertThat(targetAnnotations).isInstanceOf(TargetAnnotations.class);
         assertThat(targetAnnotations.forSubject()).contains(forSubject);
         assertThat(targetAnnotations.forRoles()).contains(forRoles);
-        assertThat(targetAnnotations.forClaims()).contains(forClaims);
-        assertThat(targetAnnotations.forClaim()).contains(forClaim);
-        assertThat(targetAnnotations.forPayload()).contains(forPayload);
     }
 
     @Test
@@ -73,8 +61,5 @@ class TargetAnnotationsRegistryTest extends UnitTest {
         assertThat(targetAnnotations.forSubject())
                 .contains(RequestUserSubject.class, RequestUserId.class);
         assertThat(targetAnnotations.forRoles()).contains(RequestUserRoles.class);
-        assertThat(targetAnnotations.forClaims()).contains(RequestUserClaims.class);
-        assertThat(targetAnnotations.forClaim()).contains(RequestUserClaim.class);
-        assertThat(targetAnnotations.forPayload()).contains(RequestUserPayload.class);
     }
 }
