@@ -23,24 +23,24 @@ import io.wwan13.wintersecurity.resolve.stub.StubNativeWebRequest;
 import io.wwan13.wintersecurity.resolve.stub.StubWebDataBinderFactory;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SubjectResolverTest extends UnitTest {
 
     static SubjectResolver subjectResolver = new SubjectResolver(
-            ResolveTestContainer.targetAnnotations,
-            ResolveTestContainer.payloadAnalysis
+            ResolveTestContainer.targetAnnotations
     );
 
     @Test
-    void should_ReturnTrue_when_AnnotationDeclaredWithValidParameterType() {
+    void should_ReturnTrue_when_AnnotationDeclared() {
         // given
         final StubMethodParameter methodParameter = new StubMethodParameter();
 
         methodParameter.declaredAnnotationsWillBe(RequestUserId.class);
-        methodParameter.parameterTypeWillBe(Long.class);
 
         // when
         boolean result = subjectResolver.supportsParameter(methodParameter);
@@ -50,42 +50,12 @@ class SubjectResolverTest extends UnitTest {
     }
 
     @Test
-    void should_ReturnFalse_when_InValidParameterType() {
-        // given
-        final StubMethodParameter methodParameter = new StubMethodParameter();
-
-        methodParameter.declaredAnnotationsWillBe(RequestUserId.class);
-        methodParameter.parameterTypeWillBe(String.class);
-
-        // when
-        boolean result = subjectResolver.supportsParameter(methodParameter);
-
-        // then
-        assertThat(result).isFalse();
-    }
-
-    @Test
     void should_ReturnFalse_when_AnnotationNotDeclared() {
         // given
         final StubMethodParameter methodParameter = new StubMethodParameter();
 
         methodParameter.declaredAnnotationsWillBe(Set.of());
         methodParameter.parameterTypeWillBe(Long.class);
-
-        // when
-        boolean result = subjectResolver.supportsParameter(methodParameter);
-
-        // then
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    void should_ReturnFalse_when_InValidParameterTypeIsDataType() {
-        // given
-        final StubMethodParameter methodParameter = new StubMethodParameter();
-
-        methodParameter.declaredAnnotationsWillBe(RequestUserId.class);
-        methodParameter.parameterTypeWillBe(String.class);
 
         // when
         boolean result = subjectResolver.supportsParameter(methodParameter);
@@ -116,5 +86,27 @@ class SubjectResolverTest extends UnitTest {
         // then
         assertThat(value.getClass()).isAssignableFrom(Long.class);
         assertThat((Long) value).isEqualTo(1L);
+    }
+
+    @Test
+    void should_ThrowException_when_InValidParameterType() {
+        // given
+        final StubMethodParameter methodParameter = new StubMethodParameter();
+        final StubModerAndViesContainer modelAndViewContainer = new StubModerAndViesContainer();
+        final StubNativeWebRequest nativeWebRequest = new StubNativeWebRequest();
+        final StubWebDataBinderFactory webDataBinderFactory = new StubWebDataBinderFactory();
+
+        nativeWebRequest.requestAttributesWillBe(ResolveTestContainer.defaultTestClaims);
+        methodParameter.parameterTypeWillBe(List.class);
+
+        // when, then
+        assertThatThrownBy(() ->
+                subjectResolver.resolveArgument(
+                        methodParameter,
+                        modelAndViewContainer,
+                        nativeWebRequest,
+                        webDataBinderFactory
+                )
+        ).isInstanceOf(IllegalStateException.class);
     }
 }
