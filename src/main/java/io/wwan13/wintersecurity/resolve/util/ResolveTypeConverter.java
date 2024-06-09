@@ -14,21 +14,29 @@
  * limitations under the License.
  */
 
-package io.wwan13.wintersecurity.util;
+package io.wwan13.wintersecurity.resolve.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class TypeConverter {
+public class ResolveTypeConverter {
 
     private static final ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final String ERROR_MESSAGE_FORMAT =
+            "'%s' cannot be converted to declared type '%s'";
 
-    private TypeConverter() {
+    private ResolveTypeConverter() {
         throw new IllegalStateException("Cannot instantiate a utility class!");
     }
 
     public static Object convertTo(Object originValue, Class<?> targetClazz) {
-        return objectMapper.convertValue(originValue, targetClazz);
+        try {
+            return objectMapper.convertValue(originValue, targetClazz);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(
+                    String.format(ERROR_MESSAGE_FORMAT, originValue, targetClazz.getSimpleName())
+            );
+        }
     }
 }

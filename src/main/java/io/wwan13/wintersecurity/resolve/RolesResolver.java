@@ -16,10 +16,9 @@
 
 package io.wwan13.wintersecurity.resolve;
 
-import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.resolve.util.AttributeExtractor;
-import io.wwan13.wintersecurity.util.TypeConverter;
+import io.wwan13.wintersecurity.resolve.util.ResolveTypeConverter;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -32,24 +31,15 @@ import java.util.Collection;
 public class RolesResolver implements HandlerMethodArgumentResolver {
 
     private final TargetAnnotations targetAnnotations;
-    private final PayloadAnalysis payloadAnalysis;
 
-    public RolesResolver(
-            TargetAnnotations targetAnnotations,
-            PayloadAnalysis payloadAnalysis
-    ) {
+    public RolesResolver(TargetAnnotations targetAnnotations) {
         this.targetAnnotations = targetAnnotations;
-        this.payloadAnalysis = payloadAnalysis;
     }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasAnnotation = targetAnnotations.forRoles().stream()
+        return targetAnnotations.forRoles().stream()
                 .anyMatch(parameter::hasParameterAnnotation);
-        boolean isValidType = payloadAnalysis.roles().getType()
-                .isAssignableFrom(parameter.getParameterType());
-
-        return hasAnnotation && isValidType;
     }
 
     @Override
@@ -69,9 +59,9 @@ public class RolesResolver implements HandlerMethodArgumentResolver {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Empty role entered"));
 
-            return TypeConverter.convertTo(role, parameter.getParameterType());
+            return ResolveTypeConverter.convertTo(role, parameter.getParameterType());
         }
 
-        return TypeConverter.convertTo(claims.getRoles(), parameter.getParameterType());
+        return ResolveTypeConverter.convertTo(claims.getRoles(), parameter.getParameterType());
     }
 }

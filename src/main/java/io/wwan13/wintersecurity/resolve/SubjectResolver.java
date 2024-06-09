@@ -16,10 +16,9 @@
 
 package io.wwan13.wintersecurity.resolve;
 
-import io.wwan13.wintersecurity.jwt.PayloadAnalysis;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.resolve.util.AttributeExtractor;
-import io.wwan13.wintersecurity.util.TypeConverter;
+import io.wwan13.wintersecurity.resolve.util.ResolveTypeConverter;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -31,24 +30,17 @@ import javax.servlet.http.HttpServletRequest;
 public class SubjectResolver implements HandlerMethodArgumentResolver {
 
     private final TargetAnnotations targetAnnotations;
-    private final PayloadAnalysis payloadAnalysis;
 
     public SubjectResolver(
-            TargetAnnotations targetAnnotations,
-            PayloadAnalysis payloadAnalysis
+            TargetAnnotations targetAnnotations
     ) {
         this.targetAnnotations = targetAnnotations;
-        this.payloadAnalysis = payloadAnalysis;
     }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasAnnotation = targetAnnotations.forSubject().stream()
+        return targetAnnotations.forSubject().stream()
                 .anyMatch(parameter::hasParameterAnnotation);
-        boolean isValidType = payloadAnalysis.subject().getType()
-                .isAssignableFrom(parameter.getParameterType());
-
-        return hasAnnotation && isValidType;
     }
 
     @Override
@@ -61,7 +53,7 @@ public class SubjectResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         TokenClaims claims = AttributeExtractor.extractClaims(request);
 
-        return TypeConverter.convertTo(
+        return ResolveTypeConverter.convertTo(
                 claims.getSubject(),
                 parameter.getParameterType()
         );
