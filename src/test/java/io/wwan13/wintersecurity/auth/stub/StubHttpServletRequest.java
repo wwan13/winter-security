@@ -43,6 +43,13 @@ public class StubHttpServletRequest implements HttpServletRequest {
         this.uri = uri;
     }
 
+    public StubHttpServletRequest(Map<String, Object> attribute) {
+        this.attribute = attribute;
+    }
+
+    public StubHttpServletRequest() {
+    }
+
     @Override
     public String getHeader(String name) {
         return expectedHeader;
