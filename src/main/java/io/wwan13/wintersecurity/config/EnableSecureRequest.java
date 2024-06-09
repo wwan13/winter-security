@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
         AuthConfiguration.class,
         AuthProcessorRegistrar.class,
         TargetAnnotationsRegistrar.class,
+        ArgumentResolversRegistrar.class,
         SecretKeyRegistrar.class
 })
 public @interface EnableSecureRequest {
