@@ -17,20 +17,10 @@
 package io.wwan13.wintersecurity.jwt;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
 
 public record PayloadAnalysis(
         Class<?> payloadClazz,
         Field subject,
         Field roles
 ) {
-
-    public Set<Field> allClaims() {
-        Set<Field> allClaims = new HashSet<>();
-        allClaims.add(subject);
-        allClaims.add(roles);
-
-        return allClaims;
-    }
 }
