@@ -18,7 +18,9 @@ package io.wwan13.wintersecurity.config;
 
 import io.wwan13.wintersecurity.secretkey.support.SecretKeyRegistry;
 
+import javax.validation.constraints.NotNull;
+
 public interface SecretKeyConfigurer {
 
-    void configureSecretKey(SecretKeyRegistry registry);
+    void configureSecretKey(@NotNull SecretKeyRegistry registry);
 }

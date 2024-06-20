@@ -19,9 +19,12 @@ package io.wwan13.wintersecurity.config;
 import io.wwan13.wintersecurity.auth.authpattern.support.AuthPatternsRegistry;
 import io.wwan13.wintersecurity.resolve.support.TargetAnnotationsRegistry;
 
+import javax.validation.constraints.NotNull;
+
 public interface SecureRequestConfigurer extends SecretKeyConfigurer {
 
-    void registerAuthPatterns(AuthPatternsRegistry registry);
+    void registerAuthPatterns(@NotNull AuthPatternsRegistry registry);
 
-    void registerTargetAnnotations(TargetAnnotationsRegistry registry);
+    default void registerTargetAnnotations(@NotNull TargetAnnotationsRegistry registry) {
+    }
 }
