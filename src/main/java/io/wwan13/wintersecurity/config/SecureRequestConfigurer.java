@@ -23,8 +23,8 @@ import javax.validation.constraints.NotNull;
 
 public interface SecureRequestConfigurer extends SecretKeyConfigurer {
 
-    void registerAuthPatterns(@NotNull AuthPatternsRegistry registry);
+    void registerAuthPatterns(AuthPatternsRegistry registry);
 
-    default void registerTargetAnnotations(@NotNull TargetAnnotationsRegistry registry) {
+    default void registerTargetAnnotations(TargetAnnotationsRegistry registry) {
     }
 }
