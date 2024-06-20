@@ -27,9 +27,6 @@ dependencies {
 
 ## How To Use
 
-You can find the full example code in
-the [repository](https://github.com/wwan13/winter-security-example).
-
 ### 1. Jwt Provider
 
 If your module includes a login API or requires issuance of jwt tokens, you should use this options.
