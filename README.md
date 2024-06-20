@@ -21,7 +21,7 @@ repositories {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wwan13:winter-security:0.0.2'
+    implementation 'com.github.wwan13:winter-security:0.0.5'
 }
 ```
 
