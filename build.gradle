@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.wwan13'
-version = '0.0.2'
+version = '0.0.5'
 
 java {
     sourceCompatibility = '17'
