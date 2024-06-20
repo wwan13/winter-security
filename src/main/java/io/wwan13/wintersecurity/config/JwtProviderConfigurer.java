@@ -18,9 +18,7 @@ package io.wwan13.wintersecurity.config;
 
 import io.wwan13.wintersecurity.jwt.support.JwtPropertiesRegistry;
 
-import javax.validation.constraints.NotNull;
-
 public interface JwtProviderConfigurer extends SecretKeyConfigurer {
 
-    void configureJwt(@NotNull JwtPropertiesRegistry registry);
+    void configureJwt(JwtPropertiesRegistry registry);
 }

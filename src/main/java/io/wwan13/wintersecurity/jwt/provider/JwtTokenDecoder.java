@@ -17,6 +17,7 @@
 package io.wwan13.wintersecurity.jwt.provider;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
@@ -51,6 +52,8 @@ public class JwtTokenDecoder implements TokenDecoder {
             throw new ExpiredJwtTokenException();
         } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             throw new InvalidJwtTokenException();
+        } catch (SignatureException e) {
+            throw new IllegalStateException("Secret key does not match where jwt token provided.");
         }
     }
 }
