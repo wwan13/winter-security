@@ -29,6 +29,7 @@ import io.wwan13.wintersecurity.jwt.payload.support.ReflectionPayloadScanner;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenGenerator;
 import io.wwan13.wintersecurity.secretkey.SecretKey;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
 public class JwtConfiguration {
@@ -43,6 +44,7 @@ public class JwtConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(TokenDecoder.class)
     public TokenDecoder tokenDecoder(SecretKey secretKey) {
         return new JwtTokenDecoder(secretKey);
     }
