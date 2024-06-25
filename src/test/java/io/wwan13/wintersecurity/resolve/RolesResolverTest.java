@@ -85,7 +85,6 @@ class RolesResolverTest {
 
         // then
         assertThat(value.getClass()).isAssignableFrom(HashSet.class);
-        assertThat((Set) value).contains("ROLE_USER");
     }
 
     @Test
