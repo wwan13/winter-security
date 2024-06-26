@@ -25,10 +25,11 @@ import io.wwan13.wintersecurity.auth.provider.BearerTokenExtractor;
 import io.wwan13.wintersecurity.auth.provider.HttpRequestAccessManager;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
 import io.wwan13.wintersecurity.jwt.provider.JwtTokenDecoder;
+import io.wwan13.wintersecurity.passwordencoder.PasswordEncoder;
 import io.wwan13.wintersecurity.secretkey.SecretKey;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class AuthConfiguration {
 
@@ -63,6 +64,6 @@ public class AuthConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new io.wwan13.wintersecurity.passwordencoder.PasswordEncoder();
+        return new PasswordEncoder(new BCryptPasswordEncoder());
     }
 }

@@ -18,5 +18,23 @@ package io.wwan13.wintersecurity.passwordencoder;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class PasswordEncoder extends BCryptPasswordEncoder {
+public class PasswordEncoder {
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public PasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    public String encode(CharSequence rawPassword) {
+        return bCryptPasswordEncoder.encode(rawPassword);
+    }
+
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public boolean upgradeEncoding(String encodedPassword) {
+        return bCryptPasswordEncoder.upgradeEncoding(encodedPassword);
+    }
 }
