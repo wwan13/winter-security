@@ -25,4 +25,6 @@ public interface RequestAccessManager {
     void manageWithAuthentication(HttpMethod method, String uri, Set<String> roles);
 
     void manageWithoutAuthentication(HttpMethod method, String uri);
+
+    boolean isUnsecuredRequest(HttpMethod method, String uri);
 }

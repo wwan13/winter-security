@@ -34,6 +34,7 @@ public class HttpRequestAccessManager implements RequestAccessManager {
         this.authPatterns = authPatterns;
     }
 
+    @Override
     public void manageWithAuthentication(
             HttpMethod method,
             String uri,
@@ -44,11 +45,16 @@ public class HttpRequestAccessManager implements RequestAccessManager {
         }
     }
 
+    @Override
     public void manageWithoutAuthentication(HttpMethod method, String uri) {
-        Set<String> role = Collections.singleton(DefaultAuthPattern.ANONYMOUS_ROLE);
-
-        if (!authPatterns.isAccessibleRequest(method, uri, role)) {
+        if (!isUnsecuredRequest(method, uri)) {
             throw new UnauthorizedException();
         }
+    }
+
+    @Override
+    public boolean isUnsecuredRequest(HttpMethod method, String uri) {
+        Set<String> role = Collections.singleton(DefaultAuthPattern.ANONYMOUS_ROLE);
+        return authPatterns.isAccessibleRequest(method, uri, role);
     }
 }
