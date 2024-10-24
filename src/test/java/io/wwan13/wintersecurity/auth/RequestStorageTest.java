@@ -18,9 +18,9 @@ package io.wwan13.wintersecurity.auth;
 
 import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 

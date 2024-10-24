@@ -16,7 +16,7 @@
 
 package io.wwan13.wintersecurity.auth;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthProcessor {
 

@@ -24,9 +24,8 @@ import io.wwan13.wintersecurity.exception.unauthirized.ExpiredJwtTokenException;
 import io.wwan13.wintersecurity.exception.unauthirized.InvalidJwtTokenException;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.jwt.TokenDecoder;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpMethod;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class InterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
 
@@ -62,14 +61,14 @@ public class InterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
             TokenClaims claims = tokenDecoder.decode(token);
 
             accessManager.manageWithAuthentication(
-                    HttpMethod.resolve(request.getMethod()),
+                    HttpMethod.valueOf(request.getMethod()),
                     request.getRequestURI(),
                     claims.getRoles()
             );
 
             storage.save(Constants.ATTRIBUTE_CLAIMS_KEY, claims);
         } catch (InvalidJwtTokenException | ExpiredJwtTokenException e) {
-            HttpMethod method = HttpMethod.resolve(request.getMethod());
+            HttpMethod method = HttpMethod.valueOf(request.getMethod());
             String uri = request.getRequestURI();
 
             if (!accessManager.isUnsecuredRequest(method, uri)) {
@@ -80,7 +79,7 @@ public class InterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
 
     private void actionIfTokenAbsent(HttpServletRequest request) {
         accessManager.manageWithoutAuthentication(
-                HttpMethod.resolve(request.getMethod()),
+                HttpMethod.valueOf(request.getMethod()),
                 request.getRequestURI()
         );
     }

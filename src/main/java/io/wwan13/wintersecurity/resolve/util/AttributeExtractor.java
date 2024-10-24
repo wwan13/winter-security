@@ -18,8 +18,8 @@ package io.wwan13.wintersecurity.resolve.util;
 
 import io.wwan13.wintersecurity.constant.Constants;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 public class AttributeExtractor {

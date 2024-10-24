@@ -65,7 +65,7 @@ class RequestsTest extends UnitTest {
         Requests requests = new Requests(methods, uriPattern);
 
         // when
-        boolean result = requests.isRegistered(HttpMethod.resolve(method), uri);
+        boolean result = requests.isRegistered(HttpMethod.valueOf(method), uri);
 
         // then
         assertThat(result).isEqualTo(expected);

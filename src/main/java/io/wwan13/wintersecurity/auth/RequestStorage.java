@@ -16,7 +16,8 @@
 
 package io.wwan13.wintersecurity.auth;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,6 @@ public record RequestStorage(
     }
 
     public void toRequestAttribute(HttpServletRequest request) {
-        storage.forEach(request::setAttribute);
+        storage.keySet().forEach(it -> request.setAttribute(it, storage.get(it)));
     }
 }
