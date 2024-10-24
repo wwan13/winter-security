@@ -76,7 +76,7 @@ class AuthPatternsTest extends UnitTest {
 
         // when
         boolean result = authPatterns
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
+                .isAccessibleRequest(HttpMethod.valueOf(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -109,7 +109,7 @@ class AuthPatternsTest extends UnitTest {
 
         // when
         boolean result = authPatterns
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
+                .isAccessibleRequest(HttpMethod.valueOf(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -143,7 +143,7 @@ class AuthPatternsTest extends UnitTest {
 
         // when
         boolean result = authPatterns
-                .isAccessibleRequest(HttpMethod.resolve(requestMethod), requestUri, Set.of(requestRole));
+                .isAccessibleRequest(HttpMethod.valueOf(requestMethod), requestUri, Set.of(requestRole));
 
         // then
         assertThat(result).isEqualTo(expected);

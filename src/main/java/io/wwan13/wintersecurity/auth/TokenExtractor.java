@@ -16,7 +16,8 @@
 
 package io.wwan13.wintersecurity.auth;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Optional;
 
 public interface TokenExtractor {

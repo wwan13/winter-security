@@ -19,13 +19,12 @@ package io.wwan13.wintersecurity.resolve;
 import io.wwan13.wintersecurity.jwt.TokenClaims;
 import io.wwan13.wintersecurity.resolve.util.AttributeExtractor;
 import io.wwan13.wintersecurity.resolve.util.ResolveTypeConverter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class SubjectResolver implements HandlerMethodArgumentResolver {
 

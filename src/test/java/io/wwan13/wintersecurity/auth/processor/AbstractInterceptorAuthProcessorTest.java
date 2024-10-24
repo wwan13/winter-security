@@ -20,17 +20,16 @@ import io.wwan13.wintersecurity.UnitTest;
 import io.wwan13.wintersecurity.auth.RequestStorage;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletRequest;
 import io.wwan13.wintersecurity.auth.stub.StubHttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AbstractInterceptorAuthProcessorTest extends UnitTest {
 
-    static class StubAbstractInterceptorAuthProcessor extends  AbstractInterceptorAuthProcessor {
+    static class StubAbstractInterceptorAuthProcessor extends AbstractInterceptorAuthProcessor {
         @Override
         protected void processInternal(HttpServletRequest request, RequestStorage storage) {
             final String key = "key";

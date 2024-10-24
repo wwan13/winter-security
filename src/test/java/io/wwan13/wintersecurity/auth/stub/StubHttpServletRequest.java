@@ -16,13 +16,32 @@
 
 package io.wwan13.wintersecurity.auth.stub;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class StubHttpServletRequest implements HttpServletRequest {
 
@@ -51,13 +70,8 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public String getHeader(String name) {
-        return expectedHeader;
-    }
-
-    @Override
     public String getAuthType() {
-        return null;
+        return "";
     }
 
     @Override
@@ -66,12 +80,17 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public long getDateHeader(String name) {
+    public long getDateHeader(String s) {
         return 0;
     }
 
     @Override
-    public Enumeration<String> getHeaders(String name) {
+    public String getHeader(String s) {
+        return expectedHeader;
+    }
+
+    @Override
+    public Enumeration<String> getHeaders(String s) {
         return null;
     }
 
@@ -81,42 +100,42 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public int getIntHeader(String name) {
+    public int getIntHeader(String s) {
         return 0;
     }
 
     @Override
     public String getMethod() {
-        return method;
+        return this.method;
     }
 
     @Override
     public String getPathInfo() {
-        return null;
+        return "";
     }
 
     @Override
     public String getPathTranslated() {
-        return null;
+        return "";
     }
 
     @Override
     public String getContextPath() {
-        return null;
+        return "";
     }
 
     @Override
     public String getQueryString() {
-        return null;
+        return "";
     }
 
     @Override
     public String getRemoteUser() {
-        return null;
+        return "";
     }
 
     @Override
-    public boolean isUserInRole(String role) {
+    public boolean isUserInRole(String s) {
         return false;
     }
 
@@ -127,12 +146,12 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getRequestedSessionId() {
-        return null;
+        return "";
     }
 
     @Override
     public String getRequestURI() {
-        return uri;
+        return this.uri;
     }
 
     @Override
@@ -142,11 +161,11 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getServletPath() {
-        return null;
+        return "";
     }
 
     @Override
-    public HttpSession getSession(boolean create) {
+    public HttpSession getSession(boolean b) {
         return null;
     }
 
@@ -157,7 +176,7 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String changeSessionId() {
-        return null;
+        return "";
     }
 
     @Override
@@ -176,17 +195,12 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public boolean isRequestedSessionIdFromUrl() {
+    public boolean authenticate(HttpServletResponse httpServletResponse) throws IOException, ServletException {
         return false;
     }
 
     @Override
-    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
-        return false;
-    }
-
-    @Override
-    public void login(String username, String password) throws ServletException {
+    public void login(String s, String s1) throws ServletException {
 
     }
 
@@ -197,22 +211,22 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public Collection<Part> getParts() throws IOException, ServletException {
+        return List.of();
+    }
+
+    @Override
+    public Part getPart(String s) throws IOException, ServletException {
         return null;
     }
 
     @Override
-    public Part getPart(String name) throws IOException, ServletException {
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException {
         return null;
     }
 
     @Override
-    public <T extends HttpUpgradeHandler> T upgrade(Class<T> httpUpgradeHandlerClass) throws IOException, ServletException {
-        return null;
-    }
-
-    @Override
-    public Object getAttribute(String name) {
-        return attribute.get(name);
+    public Object getAttribute(String s) {
+        return attribute.get(s);
     }
 
     @Override
@@ -222,11 +236,11 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getCharacterEncoding() {
-        return null;
+        return "";
     }
 
     @Override
-    public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
 
     }
 
@@ -242,7 +256,7 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getContentType() {
-        return null;
+        return "";
     }
 
     @Override
@@ -251,8 +265,8 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public String getParameter(String name) {
-        return null;
+    public String getParameter(String s) {
+        return "";
     }
 
     @Override
@@ -261,28 +275,28 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public String[] getParameterValues(String name) {
+    public String[] getParameterValues(String s) {
         return new String[0];
     }
 
     @Override
     public Map<String, String[]> getParameterMap() {
-        return null;
+        return Map.of();
     }
 
     @Override
     public String getProtocol() {
-        return null;
+        return "";
     }
 
     @Override
     public String getScheme() {
-        return null;
+        return "";
     }
 
     @Override
     public String getServerName() {
-        return null;
+        return "";
     }
 
     @Override
@@ -297,21 +311,21 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getRemoteAddr() {
-        return null;
+        return "";
     }
 
     @Override
     public String getRemoteHost() {
-        return null;
+        return "";
     }
 
     @Override
-    public void setAttribute(String name, Object o) {
-        attribute.put(name, o);
+    public void setAttribute(String s, Object o) {
+        attribute.put(s, o);
     }
 
     @Override
-    public void removeAttribute(String name) {
+    public void removeAttribute(String s) {
 
     }
 
@@ -331,12 +345,7 @@ public class StubHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public RequestDispatcher getRequestDispatcher(String path) {
-        return null;
-    }
-
-    @Override
-    public String getRealPath(String path) {
+    public RequestDispatcher getRequestDispatcher(String s) {
         return null;
     }
 
@@ -347,12 +356,12 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getLocalName() {
-        return null;
+        return "";
     }
 
     @Override
     public String getLocalAddr() {
-        return null;
+        return "";
     }
 
     @Override
@@ -392,6 +401,21 @@ public class StubHttpServletRequest implements HttpServletRequest {
 
     @Override
     public DispatcherType getDispatcherType() {
+        return null;
+    }
+
+    @Override
+    public String getRequestId() {
+        return "";
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        return "";
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
         return null;
     }
 }
